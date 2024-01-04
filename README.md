@@ -1,6 +1,6 @@
 # next_food
 
-A new Flutter project.
+A Flutter project of Mobile Development HCMUS.
 
 ## Getting Started
 
