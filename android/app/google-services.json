@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "874963326962",
+    "firebase_url": "https://next-food-acd24-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "next-food-acd24",
+    "storage_bucket": "next-food-acd24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874963326962:android:fa6e0f1b55bb1cbdb0fd6b",
+        "android_client_info": {
+          "package_name": "com.example.next_food"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6vQcEZ0hqflpiofzx1lR61hyxNLJXadg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
