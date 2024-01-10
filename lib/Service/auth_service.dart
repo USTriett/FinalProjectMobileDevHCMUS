@@ -9,11 +9,18 @@ class AuthClass {
   final storage = FlutterSecureStorage();
 
   // Email & Password Sign Up
-  Future<void> emailSignUp(
-      BuildContext context, String email, String password) async {
+  Future<void> emailSignUp(BuildContext context, String email, String password,
+      String confirmPassword) async {
     // setState(() {
     //   isLoading = true;
     // });
+
+    if (password != confirmPassword) {
+      final SnackBar snackBar =
+          SnackBar(content: Text("Passwords do not match"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
 
     try {
       // Create a user with the email rand password.
