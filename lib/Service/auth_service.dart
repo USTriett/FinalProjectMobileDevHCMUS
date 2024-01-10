@@ -1,16 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:next_food/pages/HomePage.dart';
+import 'package:next_food/pages/SignInPage.dart';
 
 class AuthClass {
   FirebaseAuth auth = FirebaseAuth.instance;
   final storage = FlutterSecureStorage();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // Email & Password Sign Up
-  Future<void> emailSignUp(BuildContext context, String email, String password,
-      String confirmPassword) async {
+  Future<void> emailSignUp(BuildContext context, String name, String email,
+      String password, String confirmPassword) async {
     // setState(() {
     //   isLoading = true;
     // });
@@ -26,9 +29,22 @@ class AuthClass {
       // Create a user with the email rand password.
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      storeTokenAndData(userCredential);
 
-      // create an instance of the current user in firestore
+      // create an user with name
+      try {
+        firestore
+            .collection("Users")
+            .doc(userCredential.user!.uid)
+            .set({"name": name});
+      } catch (e) {
+        // delete the user if the name is not set.
+        await userCredential.user!.delete();
+
+        final SnackBar snackBar = SnackBar(content: Text(e.toString()));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+
+      storeTokenAndData(userCredential);
 
       // setState(() {
       //   isLoading = false;
@@ -106,6 +122,21 @@ class AuthClass {
         // Once signed in, return the UserCredential
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
+
+        // create an user with name
+        try {
+          firestore
+              .collection("Users")
+              .doc(userCredential.user!.uid)
+              .set({"name": userCredential.user!.displayName});
+        } catch (e) {
+          // delete the user if the name is not set.
+          await userCredential.user!.delete();
+
+          final SnackBar snackBar = SnackBar(content: Text(e.toString()));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+
         // Store the token and user data in the storage to keep the user logged in.
         storeTokenAndData(userCredential);
 
@@ -143,6 +174,12 @@ class AuthClass {
       await _googleSignIn.signOut();
       await auth.signOut();
       await storage.delete(key: "token");
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (builder) => SignInPage()),
+        (route) => false,
+      );
     } catch (e) {
       final SnackBar snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);

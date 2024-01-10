@@ -19,6 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
 
   bool isLoading = false;
 
@@ -47,6 +48,10 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(
                 height: 20,
               ),
+              textItem(context, 'Name...', _nameController, false),
+              SizedBox(
+                height: 15,
+              ),
               textItem(context, 'Email...', _emailController, false),
               SizedBox(
                 height: 15,
@@ -61,8 +66,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 30,
               ),
               colorButton(context, "Sign Up", () async {
-                authClass.emailSignUp(context, _emailController.text,
-                    _passwordController.text, _confirmPasswordController.text);
+                authClass.emailSignUp(
+                    context,
+                    _nameController.text,
+                    _emailController.text,
+                    _passwordController.text,
+                    _confirmPasswordController.text);
               }),
               SizedBox(
                 height: 20,
