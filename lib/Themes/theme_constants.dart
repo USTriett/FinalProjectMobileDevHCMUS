@@ -29,15 +29,15 @@ class ThemeConstants {
   );
 
   static const TextStyle cardTitleStyle = TextStyle(
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: FontWeight.bold,
-    color: secondaryColor,
+    color: cardColor,
   );
 
   static const TextStyle cardSubtitleStyle = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.normal,
-    color: secondaryColor,
+    color: cardColor,
   );
 //default margin
   static const double defaultPadding = 16.0;

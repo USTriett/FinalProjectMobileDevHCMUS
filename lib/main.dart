@@ -1,9 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:next_food/Bloc/States/swiper_states/swiper_states.dart';
+import 'package:next_food/Bloc/swiper_bloc.dart';
+import 'package:next_food/DAO/food_dao.dart';
+import 'package:next_food/Data/data_manager.dart';
 import 'package:next_food/Themes/theme_manager.dart';
-import 'package:next_food/Widgets/login_page.dart';
+import 'package:next_food/Widgets/components/food_card.dart';
+import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/pages/login_page.dart';
 
 import 'firebase_options.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,14 +23,17 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+ 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeManager.getThemeData(),
-      home: const LoginPage(),
+      home: BlocProvider<SwiperBloc>(
+        create: (context)=> SwiperBloc(),
+        child: FoodSwiper(foodCards: DataManager.getCards(1), context: context,),
+      )
     );
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:next_food/Data/data_manager.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
-import 'package:next_food/Widgets/constants.dart';
+import 'package:next_food/Values/constants.dart';
 
-import '../FireBaseController/Authenication.dart';
+import '../../FireBaseController/Authenication.dart';
 
 class LoginPage extends StatelessWidget{
   const LoginPage({super.key});
@@ -42,8 +43,9 @@ class LoginPage extends StatelessWidget{
                   onPressed: () async {
                     userCredential.value = await signInWithGoogle();
                     if (userCredential.value != null)
-                      print(userCredential.value.user!.email);
-                  },
+                      print('Login success ${userCredential.value.user!.email}');
+                      DataManager.UpdateUser(userCredential.value.user!.email);
+                    },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
