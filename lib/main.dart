@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/pages/HomePage.dart';
+import 'package:next_food/pages/RandomPage.dart';
+import 'package:next_food/pages/SignInPage.dart';
 import 'package:next_food/pages/SignUpPage.dart';
 
 void main() async {
@@ -21,7 +23,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget currentPage = SignUpPage();
+  Widget currentPage = const SignInPage();
   AuthClass authClass = AuthClass();
 
   void checkLogin() async {
@@ -33,6 +35,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     checkLogin();
@@ -43,6 +46,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         home: Scaffold(
       body: currentPage,
+      // body: RandomPage(),
     ));
   }
 }

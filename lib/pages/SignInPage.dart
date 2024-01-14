@@ -77,6 +77,29 @@ class _SignInPageState extends State<SignInPage> {
               ),
               textItem(context, 'Password...', _passwordController, true),
               SizedBox(
+                height: 15,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  // crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: () {},
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
                 height: 30,
               ),
               colorButton(context, "Sign In", () async {
@@ -117,7 +140,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
