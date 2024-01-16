@@ -38,28 +38,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget currentPage = AppLogoWidget();
-  AuthClass authClass = AuthClass();
-
-  void checkLogin() async {
-    String? token = await authClass.getToken();
-    if (token != null) {
-      setState(() {
-        currentPage = HomePage();
-      });
-    }
-  }
-
-  void initState() {
-    super.initState();
-    checkLogin();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body:currentPage
+      body: HomePage()
     ));
   }
 }

@@ -55,6 +55,18 @@ class ThemeConstants {
     fontWeight: FontWeight.normal,
     color: subTextColor,
   );
+  static const TextStyle cardTitleStyle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+    color: Color(0xFFFDB700),
+  );
+
+  static const TextStyle cardSubtitleStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.normal,
+    color: Color(0xffffd386),
+
+  );
 //default margin
   static const double defaultPadding = 16.0;
   static const double defaultMargin = 16.0;
