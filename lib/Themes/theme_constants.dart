@@ -8,6 +8,7 @@ class ThemeConstants {
   static const Color backgroundColor = Color(0xFFFFFFFF);
   static const Color buttonTextColor = Color(0xFFF3D87B);
   static const Color backgroundWidgetColor = Color(0xffffffff);
+
   static const TextStyle titleStyle = TextStyle(
     fontSize: 30,
     fontFamily: 'Blueberry',
@@ -51,10 +52,17 @@ class ThemeConstants {
   );
 
   static const TextStyle storeSubtitleStyle = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.normal,
+    color: subTextColor,
+  );
+
+  static const TextStyle storeInforStyle = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.normal,
     color: subTextColor,
   );
+
   static const TextStyle cardTitleStyle = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
@@ -65,7 +73,6 @@ class ThemeConstants {
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: Color(0xffffd386),
-
   );
 //default margin
   static const double defaultPadding = 16.0;

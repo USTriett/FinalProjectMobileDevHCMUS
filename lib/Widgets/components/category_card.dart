@@ -22,15 +22,12 @@ class CategoryCard extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.green,
               borderRadius: BorderRadius.circular(100),
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage(imgUrl)
-              )
-          ),
-
+              image:
+                  DecorationImage(fit: BoxFit.fill, image: AssetImage(imgUrl))),
         ),
         Text(
           this.name,
+          overflow: TextOverflow.ellipsis,
           style: ThemeConstants.textStyleSmall,
         )
       ],

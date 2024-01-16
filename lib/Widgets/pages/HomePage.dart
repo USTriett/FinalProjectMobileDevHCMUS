@@ -12,31 +12,29 @@ import '../components/category_card.dart';
 import '../components/logo.dart';
 import 'SignUpPage.dart';
 
-class LocationCard extends StatefulWidget{
+class LocationCard extends StatefulWidget {
   const LocationCard({super.key});
 
   @override
   State<StatefulWidget> createState() => LocationCardState();
-
 }
 
-class LocationCardState extends State<LocationCard>{
+class LocationCardState extends State<LocationCard> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.all(20),
         child: Row(
           children: [
             SvgPicture.asset(
               'assets/location.svg',
-              width: 24,  // Adjust the width as needed
-              height: 24,  // Adjust the height as needed
+              width: 24, // Adjust the width as needed
+              height: 24, // Adjust the height as needed
             ),
             _getCurrentAddress()
           ],
-        )
-    );
+        ));
   }
 
   Widget _getCurrentAddress() {
@@ -73,9 +71,7 @@ class LocationCardState extends State<LocationCard>{
       throw Exception('No address found for the current location.');
     }
   }
-
 }
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -85,61 +81,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: SafeArea(
-        child: Expanded(
-            child: ListView(
+        body: SafeArea(
+      child: Expanded(
+          child: ListView(
+        children: [
+          Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: LocationCard()),
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+            child: AppLogoWidget(),
+          ),
+          FoodCard(FoodDAO("bún riêu", [false, true, false, true],
+              "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: Row(
               children: [
-                Container(
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: LocationCard()
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow,
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                  child: AppLogoWidget(),
-                ),
-                FoodCard(
-                    FoodDAO("bún riêu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Row(
-                    children: [
-
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
-                      SizedBox(width: 8), // Adjust the spacing between the icon and text
-                      Text(
-                        "Categories",
-                        style: ThemeConstants.buttonStyle,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Row(
-                      children:[
-                        CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
-                        CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
-                      ]
-                  ),
+                SizedBox(
+                    width: 8), // Adjust the spacing between the icon and text
+                Text(
+                  "Categories",
+                  style: ThemeConstants.buttonStyle,
                 ),
               ],
-            )
-        ),
-      )
-
-    );
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: Row(children: [
+              CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
+              CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
+            ]),
+          ),
+        ],
+      )),
+    ));
   }
 }
-
-

@@ -1,7 +1,4 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,12 +11,12 @@ import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
 
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
 import 'package:next_food/Widgets/components/logo.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/SignUpPage.dart';
@@ -29,16 +26,14 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 
-
 void main() async {
   // All widgets need to be initialized before they can be used.
 
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase.
   await Firebase.initializeApp();
-  
-   runApp(MyApp());
-  
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -49,7 +44,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   Widget currentPage = const SignInPage();
   AuthClass authClass = AuthClass();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -71,14 +65,11 @@ class _MyAppState extends State<MyApp> {
     checkLogin();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-
-      body: HomePage(),
-
+      body: HistoryPage(),
     ));
   }
 }
