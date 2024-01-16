@@ -1,3 +1,6 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'dart:html';
 
 import 'package:flutter/material.dart';
@@ -11,22 +14,20 @@ import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+
+import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
+
 import 'package:next_food/Widgets/components/logo.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/SignUpPage.dart';
+import 'Widgets/pages/SignInPage.dart';
 import 'firebase_options.dart';
-
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
-
-Future<bool> _requestLocationPermission() async {
-  PermissionStatus permissionStatus = await Permission.location.request();
-  return permissionStatus == PermissionStatus.granted;
-}
 
 
 void main() async {
@@ -35,15 +36,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase.
   await Firebase.initializeApp();
-  bool isLocationPermissionGranted = await _requestLocationPermission();
-
-  if (isLocationPermissionGranted) {
-    runApp(MyApp());
-  } else {
-    // Handle permission denied case
-    // You can show a dialog or display a message to the user
-    print('Location permission not granted.');
-  }
+  
+   runApp(MyApp());
+  
 }
 
 class MyApp extends StatefulWidget {
@@ -54,6 +49,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  Widget currentPage = const SignInPage();
+  AuthClass authClass = AuthClass();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  void checkLogin() async {
+    String? token = await authClass.getToken();
+    bool isVerified = auth.currentUser!.emailVerified;
+
+    if (token != null) {
+      setState(() {
+        currentPage = (isVerified ? const HomePage() : const VerifyEmailPage());
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
+
 
   @override
   Widget build(BuildContext context) {
