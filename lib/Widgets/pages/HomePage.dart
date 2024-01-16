@@ -21,19 +21,19 @@ class LocationCard extends StatefulWidget{
 
 }
 
-class LocationCardState extends State<LocationCard>{
+class LocationCardState extends State<LocationCard> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     _requestLocationPermission();
     return Container(
-      margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.all(20),
         child: Row(
           children: [
             SvgPicture.asset(
               'assets/location.svg',
-              width: 24,  // Adjust the width as needed
-              height: 24,  // Adjust the height as needed
+              width: 24, // Adjust the width as needed
+              height: 24, // Adjust the height as needed
             ),
 
             _getCurrentAddress()
@@ -57,15 +57,14 @@ class LocationCardState extends State<LocationCard>{
           String country = placemark.country ?? '';
           String street = placemark.street ?? '';
           return Container(
-            alignment: Alignment.center,
+              alignment: Alignment.center,
               height: 45,
               width: 150,
               child: Text(
-                  street + ', ' + district + '\n' + city + ', ' + country,
+                street + ', ' + district + '\n' + city + ', ' + country,
                 overflow: TextOverflow.clip,
               )
           );
-
         } else {
           return Text('No data available.');
         }
@@ -95,7 +94,7 @@ class LocationCardState extends State<LocationCard>{
     PermissionStatus permissionStatus = await Permission.location.request();
     return permissionStatus == PermissionStatus.granted;
   }
-
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

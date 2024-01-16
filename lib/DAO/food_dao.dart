@@ -6,6 +6,7 @@ class FoodDAO{
   String _imgURL;
   int _matched_nums;
   String _script;
+  String? _test;
   //vidu
   FoodDAO(this._name, this._types, this._imgURL, this._matched_nums, this._script);
   String get name {
