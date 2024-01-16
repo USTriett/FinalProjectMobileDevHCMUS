@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '689745068734',
     projectId: 'nextfood-24577',
     storageBucket: 'nextfood-24577.appspot.com',
+    androidClientId: '689745068734-n2989vesp72jmgdbrr3hkpho3tr5jq4r.apps.googleusercontent.com',
+    iosClientId: '689745068734-om3v3q8p98rrgam4su2bo5i5g7gv3rch.apps.googleusercontent.com',
     iosBundleId: 'com.example.nextFood',
   );
 }

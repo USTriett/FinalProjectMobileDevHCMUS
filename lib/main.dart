@@ -13,6 +13,7 @@ import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
 import 'package:next_food/Widgets/components/logo.dart';
 import 'package:next_food/Widgets/pages/NavBar.dart';
+import 'package:next_food/Widgets/pages/Question.dart';
 import 'package:next_food/Widgets/pages/SignInPage.dart';
 import 'package:next_food/nextfood_icons.dart';
 
@@ -22,7 +23,7 @@ import 'Widgets/pages/SignUpPage.dart';
 import 'firebase_options.dart';
 
 
-import 'package:firebase_core/firebase_core.dart';
+  import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 
 
@@ -48,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: NavBar(),
+        body: QuestionPage(),
       )
     );
 }

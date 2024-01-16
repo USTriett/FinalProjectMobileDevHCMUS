@@ -12,7 +12,20 @@
           "package_name": "com.example.next_food"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "689745068734-n2989vesp72jmgdbrr3hkpho3tr5jq4r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.next_food",
+            "certificate_hash": "c766eb9cd20333eb45f40c35c48baf5f0e1ace29"
+          }
+        },
+        {
+          "client_id": "689745068734-j2hoflidf5er7fj8a6mj5s4thnolk4k9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAp5v3MedCEL-QtMVLfSI92trgbZYe7aGA"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689745068734-j2hoflidf5er7fj8a6mj5s4thnolk4k9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "689745068734-om3v3q8p98rrgam4su2bo5i5g7gv3rch.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.nextFood"
+              }
+            }
+          ]
         }
       }
     }
