@@ -29,10 +29,13 @@ class CategoryCard extends StatelessWidget {
           ),
 
         ),
-        Text(
-          this.name,
-          style: ThemeConstants.textStyleSmall,
-        )
+
+           Text(
+                  this.name,
+
+                  style: ThemeConstants.textStyleSmall,
+                ),
+
       ],
     );
   }

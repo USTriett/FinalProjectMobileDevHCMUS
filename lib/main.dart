@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,10 +21,7 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 
-Future<bool> _requestLocationPermission() async {
-  PermissionStatus permissionStatus = await Permission.location.request();
-  return permissionStatus == PermissionStatus.granted;
-}
+
 
 
 void main() async {
@@ -35,15 +30,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase.
   await Firebase.initializeApp();
-  bool isLocationPermissionGranted = await _requestLocationPermission();
+  await _requestLocationPermission();
 
-  if (isLocationPermissionGranted) {
-    runApp(MyApp());
-  } else {
-    // Handle permission denied case
-    // You can show a dialog or display a message to the user
-    print('Location permission not granted.');
-  }
+
+  runApp(MyApp());
+
 }
 
 class MyApp extends StatefulWidget {

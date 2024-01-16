@@ -7,6 +7,7 @@ import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../components/category_card.dart';
 import '../components/logo.dart';
@@ -24,6 +25,7 @@ class LocationCardState extends State<LocationCard>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    _requestLocationPermission();
     return Container(
       margin: const EdgeInsets.all(20),
         child: Row(
@@ -33,6 +35,7 @@ class LocationCardState extends State<LocationCard>{
               width: 24,  // Adjust the width as needed
               height: 24,  // Adjust the height as needed
             ),
+
             _getCurrentAddress()
           ],
         )
@@ -44,11 +47,25 @@ class LocationCardState extends State<LocationCard>{
       future: _getCurrentLocation(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return const Expanded(child: Text('...'));
         } else if (snapshot.hasData) {
-          return Text('Current Address: ${snapshot.data}');
+          Placemark placemark = snapshot.data!;
+          String city = placemark.administrativeArea ?? '';
+          String district = placemark.subAdministrativeArea ?? '';
+          String country = placemark.country ?? '';
+          String street = placemark.street ?? '';
+          return Container(
+            alignment: Alignment.center,
+              height: 45,
+              width: 150,
+              child: Text(
+                  street + ', ' + district + '\n' + city + ', ' + country,
+                overflow: TextOverflow.clip,
+              )
+          );
+
         } else {
           return Text('No data available.');
         }
@@ -74,7 +91,10 @@ class LocationCardState extends State<LocationCard>{
     }
   }
 
-}
+  Future<bool> _requestLocationPermission() async {
+    PermissionStatus permissionStatus = await Permission.location.request();
+    return permissionStatus == PermissionStatus.granted;
+  }
 
 
 class HomePage extends StatefulWidget {
