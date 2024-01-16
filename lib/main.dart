@@ -4,9 +4,11 @@ import 'package:next_food/Bloc/States/swiper_states/swiper_states.dart';
 import 'package:next_food/Bloc/swiper_bloc.dart';
 import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/Data/data_manager.dart';
+import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/components/logo.dart';
 
 
 import 'Widgets/pages/HomePage.dart';
@@ -36,7 +38,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget currentPage = SignUpPage();
+  Widget currentPage = AppLogoWidget();
   AuthClass authClass = AuthClass();
 
   void checkLogin() async {
@@ -57,7 +59,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body: currentPage,
+      body: Text(
+        'Xin chào',
+        style: ThemeConstants.titleStyle,
+      ),
     ));
   }
 }
