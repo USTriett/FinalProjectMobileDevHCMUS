@@ -59,10 +59,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body: Text(
-        'Xin chào',
-        style: ThemeConstants.titleStyle,
-      ),
+      body:currentPage
     ));
   }
 }
