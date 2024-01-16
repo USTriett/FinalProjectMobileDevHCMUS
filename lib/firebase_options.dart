@@ -50,21 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD6vQcEZ0hqflpiofzx1lR61hyxNLJXadg',
-    appId: '1:874963326962:android:fa6e0f1b55bb1cbdb0fd6b',
-    messagingSenderId: '874963326962',
-    projectId: 'next-food-acd24',
-    databaseURL: 'https://next-food-acd24-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'next-food-acd24.appspot.com',
+    apiKey: 'AIzaSyAp5v3MedCEL-QtMVLfSI92trgbZYe7aGA',
+    appId: '1:689745068734:android:8c6af69edadaac0f7914ef',
+    messagingSenderId: '689745068734',
+    projectId: 'nextfood-24577',
+    storageBucket: 'nextfood-24577.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCS9dlLE6KjezMG15ApCmQWET3ujsxZh2Q',
-    appId: '1:874963326962:ios:2a799f458734d109b0fd6b',
-    messagingSenderId: '874963326962',
-    projectId: 'next-food-acd24',
-    databaseURL: 'https://next-food-acd24-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'next-food-acd24.appspot.com',
+    apiKey: 'AIzaSyDLHXAS3m-b45KSKdtdAyEdidcrnvfwt-s',
+    appId: '1:689745068734:ios:f9a48dc76e2cd97a7914ef',
+    messagingSenderId: '689745068734',
+    projectId: 'nextfood-24577',
+    storageBucket: 'nextfood-24577.appspot.com',
     iosBundleId: 'com.example.nextFood',
   );
 }
