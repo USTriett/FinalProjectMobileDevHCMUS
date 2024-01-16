@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:next_food/Service/auth_service.dart';
-import 'package:next_food/components/button_item.dart';
-import 'package:next_food/components/color_button.dart';
-import 'package:next_food/components/text_item.dart';
-import 'package:next_food/pages/SignUpPage.dart';
+
+import '../components/button_item.dart';
+import '../components/color_button.dart';
+import '../components/text_item.dart';
+import 'SignUpPage.dart';
+
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
