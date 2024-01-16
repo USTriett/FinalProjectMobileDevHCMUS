@@ -7,12 +7,9 @@ class ThemeManager {
     // You can customize and return your desired theme data here
     return ThemeData(
       scaffoldBackgroundColor: ThemeConstants.backgroundColor,
-      primaryColor: ThemeConstants.primaryColor,
       backgroundColor: ThemeConstants.backgroundColor,
-      cardColor: ThemeConstants.cardColor,
       textTheme: const TextTheme(
         headline1: ThemeConstants.titleStyle,
-        headline2: ThemeConstants.subtitleStyle,
         button: ThemeConstants.buttonStyle,
         subtitle1: ThemeConstants.cardTitleStyle,
         subtitle2: ThemeConstants.cardSubtitleStyle,
