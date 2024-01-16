@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
 import '../Widgets/pages/HomePage.dart';
 import '../Widgets/pages/SignInPage.dart';
 
@@ -184,6 +183,17 @@ class AuthClass {
       );
     } catch (e) {
       final SnackBar snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future passwordReset(BuildContext context, String email) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      SnackBar snackBar = SnackBar(content: Text('Email sent'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } catch (e) {
+      SnackBar snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }

@@ -10,6 +10,7 @@ import 'package:next_food/Widgets/components/foods_swiper.dart';
 
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/SignUpPage.dart';
+import 'Widgets/pages/SignInPage.dart';
 import 'firebase_options.dart';
 
 import 'package:firebase_core/firebase_core.dart';
