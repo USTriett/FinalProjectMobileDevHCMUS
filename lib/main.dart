@@ -10,6 +10,7 @@ import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
 import 'package:next_food/Widgets/components/logo.dart';
+import 'package:next_food/Widgets/pages/RandomPage.dart';
 import 'package:next_food/Widgets/pages/SettingPage.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -51,7 +52,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         home: Scaffold(
 
-      body: SettingPage(),
+      body: RandomPage(foods: [],),
 
     ));
   }

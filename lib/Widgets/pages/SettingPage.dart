@@ -3,9 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 
-class SettingPage extends StatelessWidget{
+class SettingPage extends StatefulWidget{
   const SettingPage({super.key});
 
+  @override
+  State<SettingPage> createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -126,11 +131,10 @@ class SettingPage extends StatelessWidget{
   }
 
   _hobbyEdit() {
-    
+
   }
 
   _logout() {}
-
 }
 
 class HobbyTag extends StatelessWidget{
