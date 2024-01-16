@@ -47,6 +47,9 @@ dependencies:
 
   flutter_secure_storage: ^9.0.0
   cloud_firestore: ^4.14.0
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
+  permission_handler: ^11.1.0
 
 dev_dependencies:
   flutter_test:
@@ -101,3 +104,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Blueberry
+      fonts:
+        - asset: assets\fonts\Blueberry .ttf
+    - family: Tauri
+      fonts:
+        - asset: assets\fonts\tauri.regular.ttf
+    - family: Inter
+      fonts:
+        - asset: assets\fonts\Inter-VariableFont_slnt,wght.ttf
