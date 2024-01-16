@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
 import '../Widgets/pages/HomePage.dart';
 import '../Widgets/pages/SignInPage.dart';
@@ -15,17 +16,12 @@ class AuthClass {
   // Email & Password Sign Up
   Future<void> emailSignUp(BuildContext context, String name, String email,
       String password, String confirmPassword) async {
-    // setState(() {
-    //   isLoading = true;
-    // });
-
     if (password != confirmPassword) {
       final SnackBar snackBar =
           SnackBar(content: Text("Passwords do not match"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
-
     try {
       // Create a user with the email rand password.
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
@@ -52,7 +48,7 @@ class AuthClass {
       // });
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (builder) => HomePage()),
+        MaterialPageRoute(builder: (builder) => VerifyEmailPage()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
@@ -81,9 +77,12 @@ class AuthClass {
       // setState(() {
       //   isLoading = false;
       // });
+
+      bool isVerified = auth.currentUser!.emailVerified;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (builder) => HomePage()),
+        MaterialPageRoute(
+            builder: (builder) => isVerified ? HomePage() : VerifyEmailPage()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
@@ -195,6 +194,20 @@ class AuthClass {
     } catch (e) {
       SnackBar snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future sendVerificationEmail(BuildContext context) async {
+    final user = auth.currentUser;
+    if (!user!.emailVerified) {
+      try {
+        await user.sendEmailVerification();
+        SnackBar snackBar = SnackBar(content: Text('Email sent'));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } catch (e) {
+        SnackBar snackBar = SnackBar(content: Text(e.toString()));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
   }
 }
