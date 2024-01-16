@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_food/Service/auth_service.dart';
-import 'package:next_food/pages/SignUpPage.dart';
+
+import 'SignUpPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

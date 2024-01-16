@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:next_food/pages/HomePage.dart';
-import 'package:next_food/pages/SignInPage.dart';
+
+
+import '../Widgets/pages/HomePage.dart';
+import '../Widgets/pages/SignInPage.dart';
 
 class AuthClass {
   FirebaseAuth auth = FirebaseAuth.instance;

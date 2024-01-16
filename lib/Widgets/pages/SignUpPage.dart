@@ -2,9 +2,11 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:next_food/Service/auth_service.dart';
-import 'package:next_food/components/color_button.dart';
-import 'package:next_food/components/text_item.dart';
-import 'package:next_food/pages/SignInPage.dart';
+
+import '../components/color_button.dart';
+import '../components/text_item.dart';
+import 'SignInPage.dart';
+
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
