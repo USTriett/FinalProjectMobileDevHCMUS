@@ -12,6 +12,7 @@ import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
 import 'package:next_food/Widgets/components/logo.dart';
+import 'package:next_food/Widgets/pages/NavBar.dart';
 import 'package:next_food/Widgets/pages/SignInPage.dart';
 import 'package:next_food/nextfood_icons.dart';
 
@@ -43,50 +44,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int _page = 0;
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-
-  final screens = [
-    HomePage(),
-    SignUpPage(),
-    SignInPage(),
-    HomePage(),
-    SignUpPage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SafeArea(
-        top: true,
-        child: Scaffold(
-          extendBody: true,
-          bottomNavigationBar: CurvedNavigationBar(
-            backgroundColor: Colors.transparent,
-            key: _bottomNavigationKey,
-            index: 0,
-            height: 60.0,
-            items: <Widget>[
-              Icon(Icons.home, size: 30, color: ThemeConstants.backgroundColor,),
-              Icon(FontAwesomeIcons.faceGrinSquintTears, size: 30, color: ThemeConstants.backgroundColor,),
-              Icon(Nextfood.nextFoodIcon, size: 40, color: Colors.black,),
-              Icon(FontAwesomeIcons.clockRotateLeft, size: 30, color: ThemeConstants.backgroundColor,),
-              Icon(Icons.settings, size: 30, color: ThemeConstants.backgroundColor,),
-            ],
-            color: ThemeConstants.buttonTextColor,
-            buttonBackgroundColor: ThemeConstants.buttonTextColor,
-            animationCurve: Curves.easeInOut,
-            animationDuration: Duration(milliseconds: 600),
-            onTap: (index) {
-              setState(() {
-                _page = index;
-              });
-            },
-            letIndexChange: (index) => true,
-          ),
-          body: screens[_page]),
+      home: Scaffold(
+        body: NavBar(),
       )
-
     );
 }
 
