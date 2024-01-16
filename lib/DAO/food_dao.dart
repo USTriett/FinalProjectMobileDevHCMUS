@@ -1,13 +1,14 @@
 import 'dart:ffi';
 
-class FoodDAO{
+class FoodDAO {
   String _name;
   List<bool> _types;
   String _imgURL;
   int _matched_nums;
   String _script;
   //vidu
-  FoodDAO(this._name, this._types, this._imgURL, this._matched_nums, this._script);
+  FoodDAO(
+      this._name, this._types, this._imgURL, this._matched_nums, this._script);
   String get name {
     return _name;
   }
@@ -16,11 +17,11 @@ class FoodDAO{
     _name = newName;
   }
 
-  String get script{
+  String get script {
     return _script;
   }
 
-  set script(String script){
+  set script(String script) {
     _script = script;
   }
 
@@ -31,8 +32,6 @@ class FoodDAO{
   set types(List<bool> newTypes) {
     _types = newTypes;
   }
-
-
 
   String get imgURL {
     return _imgURL;
