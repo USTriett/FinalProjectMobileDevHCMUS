@@ -20,11 +20,11 @@ class FoodInfoContainer extends StatelessWidget{
             const Padding(padding: EdgeInsets.only(bottom: 8.0)),
             Text(_info.name,
                 textAlign: TextAlign.start,
-                style: ThemeConstants.cardTitleStyle),
-            Text(_info.script,
-              textAlign: TextAlign.start,
-              style: ThemeConstants.cardSubtitleStyle,
-            ),
+                style: ThemeConstants.titleStyle),
+            // Text(_info.script,
+            //   textAlign: TextAlign.start,
+            //   style: ThemeConstants.cardSubtitleStyle,
+            // ),
           ],
         )
     );
@@ -41,32 +41,39 @@ class FoodCard extends StatelessWidget{
     // TODO: implement build
 
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.green,
-        borderRadius: BorderRadius.circular(20)
-      ),
+      height: 400,
+      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
       child: Stack(
-        children: <Widget>[
-          Image.asset(_info.imgURL, fit: BoxFit.cover),
-
-
-          SizedBox.expand(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                  colors: [Colors.transparent, Colors.black54],
-                  begin: Alignment.center,
-                  end: Alignment.bottomCenter,
+        children:[
+          Column(
+            children: [
+              Container(
+                height: 350,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                        image: AssetImage(_info.imgURL),
+                        fit: BoxFit.fill
+                    )
                 ),
+
               ),
-            ),
+              Container(
+                height: 50,
+                color: Colors.transparent,
+              )
+            ],
           ),
           Align(
-            alignment: Alignment.bottomLeft,
-            child: FoodInfoContainer(_info),
-          ),
-        ],
+            alignment: Alignment.bottomCenter,
+
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: FoodInfoContainer(_info),
+            ),
+          )
+        ]
       ),
     );
   }

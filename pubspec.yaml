@@ -101,3 +101,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Blueberry
+      fonts:
+        - asset: assets\fonts\Blueberry .ttf
+    - family: Tauri
+      fonts:
+        - asset: assets\fonts\tauri.regular.ttf
+    - family: Inter
+      fonts:
+        - asset: assets\fonts\Inter-VariableFont_slnt,wght.ttf
