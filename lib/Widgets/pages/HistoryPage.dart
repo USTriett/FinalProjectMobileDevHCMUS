@@ -1,7 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:next_food/DAO/history_dao.dart';
+import 'package:next_food/Data/data_manager.dart';
+import 'package:next_food/Service/auth_service.dart';
+import 'package:next_food/Service/local_storage.dart';
 import 'package:next_food/Widgets/components/history_item.dart';
 import 'package:next_food/Widgets/components/logo.dart';
+import 'package:next_food/Widgets/pages/SignInPage.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -11,143 +16,42 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  final historyData = [
-    {
-      'food_id': 1,
-      'food_name': 'Bún bò Huế',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún Riêu',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún Mắm',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún bò Huế',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún Riêu',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún Mắm',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún bò Huế',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún Riêu',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    {
-      'food_id': 1,
-      'food_name': 'Bún Mắm',
-      'food_image': 'assets/bun_rieu.jpg',
-      'restaurant_id': 1,
-      'restaurant_name': 'Nhà hàng A',
-      'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-      'time': '2021-10-10 10:10:10',
-    },
-    // {
-    //   'food_id': 1,
-    //   'food_name': 'Bún bò Huế',
-    //   'food_image': 'assets/bun_rieu.jpg',
-    //   'restaurant_id': 1,
-    //   'restaurant_name': 'Nhà hàng A',
-    //   'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-    //   'time': '2021-10-10 10:10:10',
-    // },
-    // {
-    //   'food_id': 1,
-    //   'food_name': 'Bún Riêu',
-    //   'food_image': 'assets/bun_rieu.jpg',
-    //   'restaurant_id': 1,
-    //   'restaurant_name': 'Nhà hàng A',
-    //   'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-    //   'time': '2021-10-10 10:10:10',
-    // },
-    // {
-    //   'food_id': 1,
-    //   'food_name': 'Bún Mắm',
-    //   'food_image': 'assets/bun_rieu.jpg',
-    //   'restaurant_id': 1,
-    //   'restaurant_name': 'Nhà hàng A',
-    //   'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-    //   'time': '2021-10-10 10:10:10',
-    // },
-    // {
-    //   'food_id': 1,
-    //   'food_name': 'Bún bò Huế',
-    //   'food_image': 'assets/bun_rieu.jpg',
-    //   'restaurant_id': 1,
-    //   'restaurant_name': 'Nhà hàng A',
-    //   'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-    //   'time': '2021-10-10 10:10:10',
-    // },
-    // {
-    //   'food_id': 1,
-    //   'food_name': 'Bún Riêu',
-    //   'food_image': 'assets/bun_rieu.jpg',
-    //   'restaurant_id': 1,
-    //   'restaurant_name': 'Nhà hàng A',
-    //   'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-    //   'time': '2021-10-10 10:10:10',
-    // },
-    // {
-    //   'food_id': 1,
-    //   'food_name': 'Bún Mắm',
-    //   'food_image': 'assets/bun_rieu.jpg',
-    //   'restaurant_id': 1,
-    //   'restaurant_name': 'Nhà hàng A',
-    //   'restaurant_address': '343 Tô Hiến Thành, Q.10, TP.HCM',
-    //   'time': '2021-10-10 10:10:10',
-    // },
-  ];
+  List<HistoryDAO>? historyData;
+  DataManager dataManager = DataManager();
+  LocalStorage localStorage = LocalStorage();
+  AuthClass authClass = AuthClass();
+
+  @override
+  void initState() {
+    super.initState();
+
+    localStorage.getUserId().then(
+          (uid) => {
+            print("==============================Truc Vy\n"),
+            print(uid),
+            if (uid != null)
+              {
+                dataManager.GetHistory(context, uid).then((value) => {
+                      setState(() {
+                        historyData = value;
+                      })
+                    })
+              }
+            else if (uid == null)
+              {
+                setState(() {
+                  historyData = [];
+                })
+                // authClass.logout(context),
+                // Navigator.pushAndRemoveUntil(
+                //   context,
+                //   MaterialPageRoute(builder: (builder) => SignInPage()),
+                //   (route) => false,
+                // )
+              }
+          },
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,9 +68,9 @@ class _HistoryPageState extends State<HistoryPage> {
               Expanded(
                 child: ListView.builder(
                   itemBuilder: (BuildContext context, int index) {
-                    return historyItem(historyData[index]);
+                    return historyItem(historyData![index]);
                   },
-                  itemCount: historyData.length,
+                  itemCount: historyData!.length,
                   scrollDirection: Axis.vertical,
                 ),
               ),

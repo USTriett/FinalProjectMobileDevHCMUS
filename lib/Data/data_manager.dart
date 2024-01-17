@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:next_food/DAO/history_dao.dart';
 import 'package:next_food/DAO/user_dao.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 
@@ -43,16 +44,35 @@ class DataManager {
       final SnackBar snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+    return null;
+  }
+
+  Future<List<HistoryDAO>?> GetHistory(BuildContext context, String id) async {
+    try {
+      DocumentSnapshot doc = await db.collection("Users").doc(id).get();
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      print(data["history"].toString());
+
+      SnackBar snackBar = SnackBar(content: Text(data.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      List<HistoryDAO> history = [];
+      for (var item in data["history"]) {
+        history.add(HistoryDAO.fromMapObject(item));
+      }
+      return history;
+    } catch (e) {
+      final SnackBar snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    return null;
   }
 
   static Future<void> UpdateUser(String? email) async {
     if (email == null) {
       return;
     }
-  }
-
-  static getUserId() {
-    return null;
   }
 
   static List<FoodCard> getCards(userId) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:next_food/Service/local_storage.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
 
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
@@ -52,7 +53,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body: currentPage,
+      body: HistoryPage(),
     ));
   }
 }
