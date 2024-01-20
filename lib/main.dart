@@ -1,7 +1,5 @@
-
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,12 +12,14 @@ import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
 
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
 import 'package:next_food/Widgets/components/logo.dart';
+import 'package:next_food/Widgets/pages/RandomPage.dart';
+import 'package:next_food/Widgets/pages/SettingPage.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/SignUpPage.dart';
@@ -31,14 +31,16 @@ import 'package:next_food/Service/auth_service.dart';
 
 
 void main() async {
-  // All widgets need to be initialized before they can be used.
+  // // All widgets need to be initialized before they can be used.
 
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase.
   await Firebase.initializeApp();
-  
-   runApp(MyApp());
-  
+
+
+  runApp(MyApp());
+
+
 }
 
 class MyApp extends StatefulWidget {
@@ -50,6 +52,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  int _page = 0;
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+/*=======
   Widget currentPage = const SignInPage();
   AuthClass authClass = AuthClass();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -70,15 +75,22 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     checkLogin();
   }
-
+>>>>>>> Vy-active*/
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
 
-      body: HomePage(),
+      home: Scaffold(
+
+
+      body: RandomPage(foods: [],),
+
 
     ));
   }
 }
+
+
+
+
