@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:next_food/Bloc/States/swiper_states/swiper_states.dart';
 import 'package:next_food/Bloc/swiper_bloc.dart';
 import 'package:next_food/DAO/food_dao.dart';
@@ -11,17 +13,17 @@ import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
+
+import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
+
 import 'package:next_food/Widgets/components/logo.dart';
-import 'package:next_food/Widgets/pages/NavBar.dart';
-import 'package:next_food/Widgets/pages/Question.dart';
-import 'package:next_food/Widgets/pages/SignInPage.dart';
-import 'package:next_food/nextfood_icons.dart';
 
 
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/SignUpPage.dart';
+import 'Widgets/pages/SignInPage.dart';
 import 'firebase_options.dart';
-
 
   import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
@@ -34,7 +36,10 @@ void main() async {
   // Initialize Firebase.
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+
+  runApp(MyApp());
+
+
 }
 
 class MyApp extends StatefulWidget {
@@ -45,12 +50,67 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  int _page = 0;
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       home: Scaffold(
-        body: QuestionPage(),
-      )
+        bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
+          index: 0,
+          height: 60.0,
+          items: <Widget>[
+            Container(
+              height: 50,
+              child: Column(
+                children: [Icon(Icons.add, size: 30), Text("page 1")],
+              ),
+            ),
+            Container(
+              height: 50,
+              child: Column(
+                children: [Icon(Icons.list, size: 30), Text("page 2")],
+              ),
+            ),
+            Icon(Icons.compare_arrows, size: 30),
+            Icon(Icons.call_split, size: 30),
+            Icon(Icons.perm_identity, size: 30),
+          ],
+          color: Colors.white,
+          buttonBackgroundColor: Colors.white,
+          backgroundColor: Colors.blueAccent,
+          animationCurve: Curves.easeInOut,
+          animationDuration: Duration(milliseconds: 600),
+          onTap: (index) {
+            setState(() {
+              _page = index;
+            });
+          },
+          letIndexChange: (index) => true,
+        ),
+        body: Container(
+          color: Colors.blueAccent,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(_page.toString(), textScaleFactor: 10.0),
+                ElevatedButton(
+                  child: Text('go to page of index 1'),
+                  onPressed: () {
+                    final CurvedNavigationBarState? navbarstate =
+                        _bottomNavigationKey.currentState;
+                    navbarstate?.setPage(1);
+                  },
+                )
+              ],
+            ),
+          ),
+        ))
+
     );
 }
 
