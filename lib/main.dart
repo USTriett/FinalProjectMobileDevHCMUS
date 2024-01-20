@@ -13,6 +13,7 @@ import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
 import 'package:next_food/Widgets/pages/HistoryPage.dart';
+import 'package:next_food/Widgets/pages/MapPage.dart';
 
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
@@ -29,7 +30,6 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 
-
 void main() async {
   // // All widgets need to be initialized before they can be used.
 
@@ -37,10 +37,7 @@ void main() async {
   // Initialize Firebase.
   await Firebase.initializeApp();
 
-
   runApp(MyApp());
-
-
 }
 
 class MyApp extends StatefulWidget {
@@ -51,7 +48,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 /*=======
@@ -80,17 +76,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-      home: Scaffold(
-
-
-      body: RandomPage(foods: [],),
-
-
+        home: Scaffold(
+      body: MapPage(),
     ));
   }
 }
-
-
-
-

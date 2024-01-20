@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:next_food/Themes/theme_constants.dart';
 
 Widget buttonItem(BuildContext context, String text, String icon, double size,
     void Function()? onTap) {
@@ -9,7 +10,7 @@ Widget buttonItem(BuildContext context, String text, String icon, double size,
       width: MediaQuery.of(context).size.width - 100,
       height: 60,
       child: Card(
-        color: Colors.black,
+        color: Color.fromARGB(255, 248, 218, 128),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
           side: BorderSide(
@@ -32,7 +33,8 @@ Widget buttonItem(BuildContext context, String text, String icon, double size,
             Text(
               text,
               style: TextStyle(
-                color: Colors.white,
+                color: ThemeConstants.textColor,
+                fontWeight: FontWeight.bold,
                 fontSize: 17,
               ),
             )

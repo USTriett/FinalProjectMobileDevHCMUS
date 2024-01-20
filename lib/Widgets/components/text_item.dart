@@ -1,5 +1,6 @@
 // obsureText is used to hide the password.
 import 'package:flutter/material.dart';
+import 'package:next_food/Themes/theme_constants.dart';
 
 Widget textItem(BuildContext context, String labelText,
     TextEditingController controller, bool obscureText) {
@@ -10,13 +11,13 @@ Widget textItem(BuildContext context, String labelText,
       obscureText: obscureText,
       controller: controller,
       style: TextStyle(
-        color: Colors.white,
+        color: ThemeConstants.textColor,
         fontSize: 17,
       ),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(
-          color: Colors.white,
+          color: ThemeConstants.textColor,
           fontSize: 17,
         ),
         focusedBorder: OutlineInputBorder(

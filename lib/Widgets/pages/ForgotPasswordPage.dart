@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:next_food/Service/auth_service.dart';
+import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/pages/SignInPage.dart';
 
 import '../components/color_button.dart';
@@ -37,17 +38,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           // Use MediaQuery to get the screen size.
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.black,
+          color: ThemeConstants.backgroundColor,
           child: Column(
             // Align the children to the center of the screen.
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Forgot Password',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold),
+                style: ThemeConstants.titleStyle,
               ),
               SizedBox(
                 height: 15,
@@ -55,7 +53,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               Text(
                 'Enter your email to get reset password link',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: ThemeConstants.textColor,
                   fontSize: 16,
                 ),
               ),
@@ -78,7 +76,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   Text(
                     'Already reset your password?',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: ThemeConstants.textColor,
                       fontSize: 16,
                     ),
                   ),
@@ -96,7 +94,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     child: Text(
                       'Sign In',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: ThemeConstants.subTextColor,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
