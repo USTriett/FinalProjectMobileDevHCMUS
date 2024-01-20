@@ -1,14 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:next_food/Service/auth_service.dart';
+import 'package:next_food/Widgets/pages/ForgotPasswordPage.dart';
 
 import '../components/button_item.dart';
 import '../components/color_button.dart';
 import '../components/text_item.dart';
 import 'SignUpPage.dart';
-
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -58,11 +57,11 @@ class _SignInPageState extends State<SignInPage> {
               SizedBox(
                 height: 15,
               ),
-              buttonItem(context, 'Continue with Mobile', 'assets/phone.svg',
-                  30, () {}),
-              SizedBox(
-                height: 15,
-              ),
+              // buttonItem(context, 'Continue with Mobile', 'assets/phone.svg',
+              //     30, () {}),
+              // SizedBox(
+              //   height: 15,
+              // ),
               Text(
                 'Or',
                 style: TextStyle(
@@ -78,6 +77,37 @@ class _SignInPageState extends State<SignInPage> {
                 height: 15,
               ),
               textItem(context, 'Password...', _passwordController, true),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  // crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      mouseCursor: SystemMouseCursors.click,
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => ForgotPasswordPage()),
+                          (route) => false,
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(
                 height: 30,
               ),
@@ -119,7 +149,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

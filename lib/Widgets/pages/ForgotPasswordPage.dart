@@ -2,29 +2,32 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:next_food/Service/auth_service.dart';
+import 'package:next_food/Widgets/pages/SignInPage.dart';
 
 import '../components/color_button.dart';
 import '../components/text_item.dart';
-import 'SignInPage.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   firebase_auth.FirebaseAuth firebaseAuth = firebase_auth.FirebaseAuth.instance;
 
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
-  TextEditingController _nameController = TextEditingController();
 
   bool isLoading = false;
 
   AuthClass authClass = AuthClass();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,39 +43,31 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Sign Up',
+                'Forgot Password',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 35,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
-                height: 20,
-              ),
-              textItem(context, 'Name...', _nameController, false),
-              SizedBox(
                 height: 15,
+              ),
+              Text(
+                'Enter your email to get reset password link',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(
+                height: 20,
               ),
               textItem(context, 'Email...', _emailController, false),
               SizedBox(
-                height: 15,
+                height: 20,
               ),
-              textItem(context, 'Password...', _passwordController, true),
-              SizedBox(
-                height: 15,
-              ),
-              textItem(context, 'Confirm Password...',
-                  _confirmPasswordController, true),
-              SizedBox(
-                height: 30,
-              ),
-              colorButton(context, "Sign Up", () async {
-                authClass.emailSignUp(
-                    context,
-                    _nameController.text,
-                    _emailController.text,
-                    _passwordController.text,
-                    _confirmPasswordController.text);
+              colorButton(context, "Send verify email", () async {
+                authClass.passwordReset(context, _emailController.text.trim());
               }),
               SizedBox(
                 height: 20,
@@ -81,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'If you already have an account?',
+                    'Already reset your password?',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

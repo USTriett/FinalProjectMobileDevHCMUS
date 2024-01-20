@@ -13,12 +13,11 @@ import '../components/category_card.dart';
 import '../components/logo.dart';
 import 'SignUpPage.dart';
 
-class LocationCard extends StatefulWidget{
+class LocationCard extends StatefulWidget {
   const LocationCard({super.key});
 
   @override
   State<StatefulWidget> createState() => LocationCardState();
-
 }
 
 class LocationCardState extends State<LocationCard> {
@@ -38,8 +37,7 @@ class LocationCardState extends State<LocationCard> {
 
             _getCurrentAddress()
           ],
-        )
-    );
+        ));
   }
 
   Widget _getCurrentAddress() {
@@ -89,11 +87,11 @@ class LocationCardState extends State<LocationCard> {
       throw Exception('No address found for the current location.');
     }
   }
-
   Future<bool> _requestLocationPermission() async {
     PermissionStatus permissionStatus = await Permission.location.request();
     return permissionStatus == PermissionStatus.granted;
   }
+
 }
 
 class HomePage extends StatefulWidget {
@@ -104,61 +102,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: SafeArea(
-        child: Expanded(
-            child: ListView(
+        body: SafeArea(
+      child: Expanded(
+          child: ListView(
+        children: [
+          Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: LocationCard()),
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+            child: AppLogoWidget(),
+          ),
+          FoodCard(FoodDAO("bún riêu", [false, true, false, true],
+              "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: Row(
               children: [
-                Container(
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: LocationCard()
+                Icon(
+                  Icons.star,
+                  color: Colors.yellow,
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
-                  child: AppLogoWidget(),
-                ),
-                FoodCard(
-                    FoodDAO("bún riêu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Row(
-                    children: [
-
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
-                      SizedBox(width: 8), // Adjust the spacing between the icon and text
-                      Text(
-                        "Categories",
-                        style: ThemeConstants.buttonStyle,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Row(
-                      children:[
-                        CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
-                        CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
-                      ]
-                  ),
+                SizedBox(
+                    width: 8), // Adjust the spacing between the icon and text
+                Text(
+                  "Categories",
+                  style: ThemeConstants.buttonStyle,
                 ),
               ],
-            )
-        ),
-      )
-
-    );
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: Row(children: [
+              CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
+              CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
+            ]),
+          ),
+        ],
+      )),
+    ));
   }
 }
-
-

@@ -1,4 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,21 +12,22 @@ import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
+
+import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
+
 import 'package:next_food/Widgets/components/logo.dart';
 import 'package:next_food/Widgets/pages/RandomPage.dart';
 import 'package:next_food/Widgets/pages/SettingPage.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/SignUpPage.dart';
+import 'Widgets/pages/SignInPage.dart';
 import 'firebase_options.dart';
-
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
-
-
 
 
 void main() async {
@@ -37,6 +40,7 @@ void main() async {
 
   runApp(MyApp());
 
+
 }
 
 class MyApp extends StatefulWidget {
@@ -47,34 +51,46 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+/*=======
+  Widget currentPage = const SignInPage();
+  AuthClass authClass = AuthClass();
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  void checkLogin() async {
+    String? token = await authClass.getToken();
+    bool isVerified = auth.currentUser!.emailVerified;
+
+    if (token != null) {
+      setState(() {
+        currentPage = (isVerified ? const HomePage() : const VerifyEmailPage());
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
+>>>>>>> Vy-active*/
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       home: Scaffold(
 
 
       body: RandomPage(foods: [],),
 
+
     ));
   }
 }
 
-  // @override
-  // Widget build(BuildContext context){
-  //   return MaterialApp(
-  //     home: Scaffold(
-  //       backgroundColor: Colors.blue,
-  //       appBar: AppBar(
-  //         title: Text('Curved Nav Bar', textDirection: TextDirection.rtl,),
-  //         elevation: 0,
-  //         centerTitle: true,
-  //       ),
-  //       body: Container(),
-  //     ),
-  //   );
-  // }
+
 
 
