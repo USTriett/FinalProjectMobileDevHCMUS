@@ -65,20 +65,5 @@ class _NavBar extends State<NavBar> {
 
     );
 }
-
-  // @override
-  // Widget build(BuildContext context){
-  //   return MaterialApp(
-  //     home: Scaffold(
-  //       backgroundColor: Colors.blue,
-  //       appBar: AppBar(
-  //         title: Text('Curved Nav Bar', textDirection: TextDirection.rtl,),
-  //         elevation: 0,
-  //         centerTitle: true,
-  //       ),
-  //       body: Container(),
-  //     ),
-  //   );
-  // }
 }
 
