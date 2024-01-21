@@ -5,10 +5,9 @@ class AppLogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/10),
         // Đặt kích thước hoặc cách căn chỉnh theo nhu cầu của bạn
-
         width: 180.0,
-        height: 180.0,
 
         // Thay thế AssetImage bằng Image.network hoặc các widget hình ảnh khác tùy thuộc vào nguồn ảnh của bạn
         child: Image.asset('assets/logo.png'),
