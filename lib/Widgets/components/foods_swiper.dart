@@ -14,7 +14,10 @@ import 'food_card.dart';
 
 class FoodSwiper extends StatefulWidget{
   List<FoodCard> foodCards;
-  FoodSwiper({super.key, required this.foodCards, required this.context});
+  Function? like = (){};
+  Function? dislike = (){};
+
+  FoodSwiper({super.key, required this.foodCards, required this.context, this.like, this.dislike});
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final BuildContext context;
   @override
@@ -36,12 +39,8 @@ class _FoodSwiperState extends State<FoodSwiper> {
       _swipeItems.add(
           SwipeItem(
             content: item,
-            likeAction: (){
-
-            },
-            nopeAction: (){
-
-            },
+            likeAction: widget.like,
+            nopeAction: widget.dislike,
           )
       );
     }
@@ -105,6 +104,7 @@ class _FoodSwiperState extends State<FoodSwiper> {
                     itemChanged: (SwipeItem item, int index) {
                       count += 1;
                       count %= 3;
+
                       if(count == 2){
                         swiperBloc.add(SwipeHalfEvent());
                       }
@@ -135,11 +135,7 @@ class _FoodSwiperState extends State<FoodSwiper> {
                 _matchEngine!.currentItem?.nope();
               },
               child: Text("Nope")),
-          ElevatedButton(
-              onPressed: () {
-                _matchEngine!.currentItem?.superLike();
-              },
-              child: Text("Superlike")),
+
           ElevatedButton(
               onPressed: () {
                 _matchEngine!.currentItem?.like();
@@ -157,15 +153,8 @@ class _FoodSwiperState extends State<FoodSwiper> {
       _swipeItems.add(
         SwipeItem(
           content: item,
-          likeAction: (){
-            
-            // bloc.add(LikeEvents());
-
-          },
-          nopeAction: (){
-            // bloc.add(DislikeEvents());
-
-          },
+          likeAction: widget.like,
+          nopeAction: widget.dislike,
         )
       );
     }
