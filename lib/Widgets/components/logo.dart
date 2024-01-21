@@ -5,7 +5,7 @@ class AppLogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/10),
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/35),
         // Đặt kích thước hoặc cách căn chỉnh theo nhu cầu của bạn
         width: 180.0,
 

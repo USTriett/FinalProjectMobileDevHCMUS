@@ -77,74 +77,77 @@ class _FoodSwiperState extends State<FoodSwiper> {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height/1.5,
-              width: MediaQuery.of(context).size.width/1.2,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                // color: Colors.green
-              ),
-              child:
-              BlocBuilder<SwiperBloc, SwiperStates>(
-                builder: (context, state) {
-                  if (state is AddMoreCards) {
-                    addItemData(swiperBloc);
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: MediaQuery.of(context).size.height/1.5,
+                width: MediaQuery.of(context).size.width/1.2,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  // color: Colors.green
+                ),
+                child:
+                BlocBuilder<SwiperBloc, SwiperStates>(
+                  builder: (context, state) {
+                    if (state is AddMoreCards) {
+                      addItemData(swiperBloc);
+                    }
+
+                    return SwipeCards(
+                      matchEngine: _matchEngine,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child: _swipeItems[index].content,
+                        );
+                      },
+                      onStackFinished: () {
+                        // Xử lý khi stack đã hoàn thành
+                      },
+                      itemChanged: (SwipeItem item, int index) {
+                        count += 1;
+                        count %= 3;
+
+                        if(count == 2){
+                          swiperBloc.add(SwipeHalfEvent());
+                        }
+                      },
+                      leftSwipeAllowed: true,
+                      rightSwipeAllowed: true,
+                      upSwipeAllowed: false,
+                      fillSpace: false,
+                    );
                   }
 
-                  return SwipeCards(
-                    matchEngine: _matchEngine,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        child: _swipeItems[index].content,
-                      );
-                    },
-                    onStackFinished: () {
-                      // Xử lý khi stack đã hoàn thành
-                    },
-                    itemChanged: (SwipeItem item, int index) {
-                      count += 1;
-                      count %= 3;
-
-                      if(count == 2){
-                        swiperBloc.add(SwipeHalfEvent());
-                      }
-                    },
-                    leftSwipeAllowed: true,
-                    rightSwipeAllowed: true,
-                    upSwipeAllowed: false,
-                    fillSpace: false,
-                  );
-                }
-
-              )
+                )
+              ),
             ),
-            _rowUtilButton(),
+            // _rowUtilButton(),
 
           ],
         )
     );
   }
-  Widget _rowUtilButton(){
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-              onPressed: () {
-                _matchEngine!.currentItem?.nope();
-              },
-              child: Text("Nope")),
-
-          ElevatedButton(
-              onPressed: () {
-                _matchEngine!.currentItem?.like();
-              },
-              child: Text("Like"))
-        ],
-      ),
-    );
-  }
+  // Widget _rowUtilButton(){
+  //   return Align(
+  //     alignment: Alignment.bottomCenter,
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         ElevatedButton(
+  //             onPressed: () {
+  //               _matchEngine!.currentItem?.nope();
+  //             },
+  //             child: Text("Nope")),
+  //
+  //         ElevatedButton(
+  //             onPressed: () {
+  //               _matchEngine!.currentItem?.like();
+  //             },
+  //             child: Text("Like"))
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Future<void> addItemData(SwiperBloc bloc) async{
     List<FoodCard> newItems = DataManager.getCards(0);

@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
@@ -56,11 +57,12 @@ class LocationCardState extends State<LocationCard> {
           String street = placemark.street ?? '';
           return Container(
               alignment: Alignment.center,
-              height: 45,
-              width: 150,
+              height: 60,
+              width: 280,
               child: Text(
-                street + ', ' + district + '\n' + city + ', ' + country,
-                overflow: TextOverflow.clip,
+                district + ', ' + city + '\n' + country,
+                overflow: TextOverflow.visible,
+                style: ThemeConstants.textStyleSmall,
               )
           );
         } else {
@@ -114,11 +116,23 @@ class _HomePageState extends State<HomePage> {
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: LocationCard()),
           Container(
-            margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+            margin: EdgeInsets.fromLTRB(0, 10, 20, 20),
+            alignment: Alignment.center,
             child: AppLogoWidget(),
           ),
-          FoodCard(FoodDAO("bún riêu", [false, true, false, true],
-              "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
+          CarouselSlider.builder(
+            options: CarouselOptions(
+              height: 400,
+              aspectRatio: 16/9,
+              viewportFraction: 0.9,
+              enableInfiniteScroll: false
+            ),
+            itemCount: 1,
+            itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                FoodCard(FoodDAO("bún riêu", [false, true, false, true],
+                    "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
+          ),
+
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
