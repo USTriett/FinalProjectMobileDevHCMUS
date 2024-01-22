@@ -12,11 +12,12 @@ import 'package:vibration/vibration.dart';
 
 import '../../Bloc/swiper_bloc.dart';
 import '../../DAO/food_dao.dart';
+import '../../Values/constants.dart';
 import '../components/logo.dart';
 
 class RandomPage extends StatefulWidget{
   final List<FoodDAO> foods;
-  RandomPage({super.key, required this.foods});
+  RandomPage({required this.foods}): super(key:WidgetKey.randomPageKey);
   @override
   State<StatefulWidget> createState() => RandomPageState();
 
@@ -34,7 +35,7 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
     super.initState();
 
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 5000),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
     _animation = Tween<double>(begin: 0.0, end: 8.0).animate(_animationController);
@@ -57,6 +58,13 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
   void dispose() {
     _animationController.dispose();
     super.dispose();
+  }
+
+  void setShakeAvailable(bool available){
+    if(available)
+      _detector.startListening();
+    else
+      _detector.stopListening();
   }
 
   @override

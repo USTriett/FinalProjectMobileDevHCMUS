@@ -1,15 +1,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:next_food/Bloc/Events/navbar_events/navbar_events.dart';
+import 'package:next_food/Bloc/navbar_bloc.dart';
 import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
+import 'package:next_food/Widgets/pages/NavBar.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../Values/constants.dart';
 import '../components/category_card.dart';
 import '../components/logo.dart';
 import 'SignUpPage.dart';
@@ -22,6 +28,14 @@ class LocationCard extends StatefulWidget {
 }
 
 class LocationCardState extends State<LocationCard> {
+  bool isLoad = false;
+
+  String city = '';
+
+  String district='';
+
+  String country ='';
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,6 +56,19 @@ class LocationCardState extends State<LocationCard> {
   }
 
   Widget _getCurrentAddress() {
+    if(isLoad)
+      {
+        return Container(
+            alignment: Alignment.center,
+            height: 60,
+            width: 280,
+            child: Text(
+              '$district, $city\n$country',
+              overflow: TextOverflow.visible,
+              style: ThemeConstants.textStyleSmall,
+            )
+        );
+      }
     return FutureBuilder<Placemark>(
       future: _getCurrentLocation(),
       builder: (context, snapshot) {
@@ -51,16 +78,17 @@ class LocationCardState extends State<LocationCard> {
           return const Expanded(child: Text('...'));
         } else if (snapshot.hasData) {
           Placemark placemark = snapshot.data!;
-          String city = placemark.administrativeArea ?? '';
-          String district = placemark.subAdministrativeArea ?? '';
-          String country = placemark.country ?? '';
+          city = placemark.administrativeArea ?? '';
+          district = placemark.subAdministrativeArea ?? '';
+          country = placemark.country ?? '';
           String street = placemark.street ?? '';
+          isLoad = true;
           return Container(
               alignment: Alignment.center,
               height: 60,
               width: 280,
               child: Text(
-                district + ', ' + city + '\n' + country,
+                '$district, $city\n$country',
                 overflow: TextOverflow.visible,
                 style: ThemeConstants.textStyleSmall,
               )
@@ -129,8 +157,18 @@ class _HomePageState extends State<HomePage> {
             ),
             itemCount: 1,
             itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                FoodCard(FoodDAO("bún riêu", [false, true, false, true],
+              GestureDetector(
+                onTap: (){
+                  CurvedNavigationBarState? navBarState =
+                      WidgetKey.bottomNavigationKey.currentState;
+                  navBarState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
+
+                  WidgetKey.navBarKey?.currentState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
+                },
+                child: FoodCard(FoodDAO("bún riêu", [false, true, false, true],
                     "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
+              )
+
           ),
 
           Container(

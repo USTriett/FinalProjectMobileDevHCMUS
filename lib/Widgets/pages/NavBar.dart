@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:next_food/Bloc/Events/navbar_events/navbar_events.dart';
+import 'package:next_food/Bloc/States/navbar_states/navbar_states.dart';
+import 'package:next_food/Bloc/navbar_bloc.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/pages/HomePage.dart';
 import 'package:next_food/Widgets/pages/RandomPage.dart';
 import 'package:next_food/Widgets/pages/SignInPage.dart';
 import 'package:next_food/Widgets/pages/SignUpPage.dart';
 import 'package:next_food/nextfood_icons.dart';
-
 import '../../DAO/food_dao.dart';
+import '../../Values/constants.dart';
+
 
 class NavBarComponent extends StatefulWidget {
 // Private constructor
@@ -17,7 +22,7 @@ class NavBarComponent extends StatefulWidget {
 // static const int HOME_PAGE_TAB = 1;
 // static const int HOME_PAGE_TAB = 1;
 
-  NavBarComponent._internal();
+  NavBarComponent._internal() : super(key: WidgetKey.navBarKey);
   final screens = [
     HomePage(),
 
@@ -43,22 +48,38 @@ class NavBarComponent extends StatefulWidget {
   }
   static int currentTab = 0;
   @override
-  State<NavBarComponent> createState() => _NavBar.fromPage(currentTab);
+  State<NavBarComponent> createState() => NavBar.fromPage(currentTab);
 
 }
 
-class _NavBar extends State<NavBarComponent> {
+class NavBar extends State<NavBarComponent> {
   int page = 0;
-  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-  _NavBar();
-  _NavBar.fromPage(int i){
+
+  NavBar();
+  NavBar.fromPage(int i){
     page = i;
   }
+
+
+  void setPage(int tabID){
+    CurvedNavigationBarState? navBarState =
+        WidgetKey.bottomNavigationKey.currentState;
+    navBarState?.setPage(page);
+    // print("current tab2: ${page}");
+    bool isShake = true;
+    if(tabID != NavBarComponent.RANDOM_PAGE_TAB){
+      isShake = false;
+    }
+    WidgetKey.randomPageKey?.currentState?.setShakeAvailable(isShake);
+
+  }
+
   @override
   Widget build(BuildContext context) {
+
     Widget navBar = CurvedNavigationBar(
       backgroundColor: Colors.transparent,
-      key: _bottomNavigationKey,
+      key: WidgetKey.bottomNavigationKey,
       index: 0,
       height: 60.0,
       items: <Widget>[
@@ -80,7 +101,7 @@ class _NavBar extends State<NavBarComponent> {
       letIndexChange: (index) => true,
     );
     CurvedNavigationBarState? navBarState =
-        _bottomNavigationKey.currentState;
+        WidgetKey.bottomNavigationKey.currentState;
     navBarState?.setPage(page);
     return SafeArea(
       top: true,
@@ -89,9 +110,10 @@ class _NavBar extends State<NavBarComponent> {
         bottomNavigationBar: navBar,
         body: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-          child: widget.screens[page],
+          child: widget.screens[page]
+
+          )
         ),
-      ),
-    );
+      );
   }
 }

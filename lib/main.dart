@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:next_food/Bloc/States/swiper_states/swiper_states.dart';
+import 'package:next_food/Bloc/navbar_bloc.dart';
 import 'package:next_food/Bloc/swiper_bloc.dart';
 import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/Data/data_manager.dart';
@@ -58,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
 
-      home: NavBarComponent.getInstance(NavBarComponent.RANDOM_PAGE_TAB)
+      home: NavBarComponent.getInstance(0),
 
     );
 }
