@@ -1,3 +1,5 @@
+import 'dart:math';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +8,12 @@ import 'package:next_food/Bloc/Events/navbar_events/navbar_events.dart';
 import 'package:next_food/Bloc/States/navbar_states/navbar_states.dart';
 import 'package:next_food/Bloc/navbar_bloc.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
 import 'package:next_food/Widgets/pages/HomePage.dart';
 import 'package:next_food/Widgets/pages/RandomPage.dart';
+
+import 'package:next_food/Widgets/pages/SettingPage.dart';
+
 import 'package:next_food/Widgets/pages/SignInPage.dart';
 import 'package:next_food/Widgets/pages/SignUpPage.dart';
 import 'package:next_food/nextfood_icons.dart';
@@ -25,16 +31,16 @@ class NavBarComponent extends StatefulWidget {
   NavBarComponent._internal() : super(key: WidgetKey.navBarKey);
   final screens = [
     HomePage(),
-
     RandomPage(foods: [
       FoodDAO("bún riêu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon"),
       FoodDAO("bún đậu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon"),
       FoodDAO("bún mắm", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon"),
       FoodDAO("bún bò", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon")
     ]),
-    SignUpPage(),
+
     SignInPage(),
-    HomePage(),
+    HistoryPage(),
+    SettingPage(),
   ];
 // Static instance variable
   static final NavBarComponent _instance = NavBarComponent._internal();
