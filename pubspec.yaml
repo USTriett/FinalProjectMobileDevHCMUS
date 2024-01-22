@@ -58,6 +58,7 @@ dependencies:
   floating_pullup_card: ^1.2.0
   flutter_placeholder_textlines: ^1.2.0
   swipeable_tile: ^2.0.0+3
+  url_launcher: ^6.2.3
 
 dev_dependencies:
   flutter_test:

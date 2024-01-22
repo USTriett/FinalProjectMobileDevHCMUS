@@ -8,6 +8,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/components/color_button.dart';
 import 'package:next_food/Widgets/components/icon_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key, required this.searchKey}) : super(key: key);
@@ -241,6 +242,14 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  void openGoogleMapsDirections() async {
+    final url =
+        'https://www.google.com/maps/dir/?api=1&origin=$lat,$lng&destination=$latDes,$lngDes';
+    if (!await launchUrl(Uri.parse(url))) {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,6 +284,7 @@ class _MapPageState extends State<MapPage> {
               // add history
 
               // open google map intent with start and end location
+              openGoogleMapsDirections();
             },
           ),
           SizedBox(
