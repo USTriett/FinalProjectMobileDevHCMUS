@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/components/color_button.dart';
 import 'package:next_food/Widgets/components/question_item.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../Data/data_manager.dart';
+
 
 ButtonStyle un_chose = ElevatedButton.styleFrom(
   primary: Colors.white,
@@ -23,22 +27,17 @@ ButtonStyle chose = ElevatedButton.styleFrom(
   ),
 );
 
-import 'dart:html';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class QuestionDAO {
   String _question; // Sử dụng dấu "_" để đặt tên cho thuộc tính riêng tư
   List<String> _options;
-  String _answer;
+  late String _answer;
 
   QuestionDAO(
       {required String question,
-      required List<String> options,
-      required String answer})
+      required List<String> options})
       : _question = question,
-        _options = options,
-        _answer = answer;
+        _options = options;
 
   // Getter cho question
   String get question => _question;
@@ -60,7 +59,7 @@ class QuestionDAO {
     final data = doc.data();
     return QuestionDAO(
         question: data?["question"] as String,
-        options: [data?['options']['0'] as String, data?['options']['1'] as String]
+        options: [data?['options'][0] as String, data?['options'][1] as String]
     );
   }
 
@@ -91,8 +90,9 @@ class ListQuestionDAO {
         return AlertDialog(
           title: Text('Questions', style: ThemeConstants.textStyleLarge,),
           actions: <Widget>[
-            colorButton(context, 'Lọc', () {
+            colorButton(context, 'Lọc', () async {
               print(printAnswer());
+              await DataManager.updateAnswer(_questions);
               _dismissDialog();
             }),
             SizedBox(

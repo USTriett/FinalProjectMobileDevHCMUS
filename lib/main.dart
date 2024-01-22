@@ -24,6 +24,7 @@ import 'package:next_food/Widgets/pages/RandomPage.dart';
 import 'package:next_food/Widgets/pages/SettingPage.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'Values/constants.dart';
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/NavBar.dart';
 import 'Widgets/pages/SignUpPage.dart';
@@ -33,13 +34,14 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 
+
 void main() async {
   // // All widgets need to be initialized before they can be used.
 
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize Firebase.
   await Firebase.initializeApp();
-
+  DAO.list = await DataManager.getAllQuestion();
   runApp(MyApp());
 }
 
@@ -53,7 +55,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
-/*=======
+
   Widget currentPage = const SignInPage();
   AuthClass authClass = AuthClass();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -64,7 +66,8 @@ class _MyAppState extends State<MyApp> {
 
     if (token != null) {
       setState(() {
-        currentPage = (isVerified ? const HomePage() : const VerifyEmailPage());
+        authClass.test();
+        currentPage = (isVerified ? TestPage(questions: DAO.list) : const VerifyEmailPage());
       });
     }
   }
@@ -74,12 +77,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     checkLogin();
   }
->>>>>> Vy-active*/
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
 
-      home: NavBarComponent.getInstance(0),
+      home: currentPage,
 
     );
 }

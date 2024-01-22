@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../DAO/question_dao.dart';
 import '../Widgets/pages/NavBar.dart';
 import '../Widgets/pages/RandomPage.dart';
 
@@ -30,4 +31,8 @@ class WidgetKey{
   static GlobalKey<NavBar> navBarKey = GlobalKey();
   static GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
   static GlobalKey<RandomPageState> randomPageKey = GlobalKey();
+}
+
+class DAO{
+  static List<QuestionDAO> list = [];
 }

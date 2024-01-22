@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:next_food/Widgets/components/popup_question.dart';
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
+import '../Values/constants.dart';
 import '../Widgets/pages/HomePage.dart';
 import '../Widgets/pages/SignInPage.dart';
 
@@ -12,7 +14,9 @@ class AuthClass {
   FirebaseAuth auth = FirebaseAuth.instance;
   final storage = FlutterSecureStorage();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  Future<void> test()async {
+    print("user now: ${auth.currentUser}");
+  }
   // Email & Password Sign Up
   Future<void> emailSignUp(BuildContext context, String name, String email,
       String password, String confirmPassword) async {
@@ -79,10 +83,11 @@ class AuthClass {
       // });
 
       bool isVerified = auth.currentUser!.emailVerified;
+      test();
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (builder) => isVerified ? HomePage() : VerifyEmailPage()),
+            builder: (builder) => isVerified ? TestPage(questions: DAO.list) : VerifyEmailPage()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
@@ -143,7 +148,7 @@ class AuthClass {
         // remove the previous page from the stack and navigate to the home page.
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (builder) => HomePage()),
+          MaterialPageRoute(builder: (builder) => TestPage(questions: DAO.list)),
           (route) => false,
         );
       } catch (e) {
