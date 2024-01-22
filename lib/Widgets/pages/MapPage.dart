@@ -9,6 +9,7 @@ import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/components/color_button.dart';
 import 'package:next_food/Widgets/components/icon_text.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key, required this.searchKey}) : super(key: key);
@@ -26,8 +27,8 @@ class _MapPageState extends State<MapPage> {
 
   // input for search
   late String searchKey = widget.searchKey;
-  num? lat = 10.775990235000052;
-  num? lng = 106.66386249000004;
+  num? lat = 10.2;
+  num? lng = 106.2;
   num? latDes;
   num? lngDes;
   int? limit = 20;
@@ -50,12 +51,12 @@ class _MapPageState extends State<MapPage> {
     this.mapboxMap = mapboxMap;
 
     // get current location
-    // geolocator.Position position =
-    //     await geolocator.Geolocator.getCurrentPosition(
-    //         desiredAccuracy: geolocator.LocationAccuracy.high);
-    // print("########################");
-    // print(position);
-    // print("########################");
+    getCurrentLocation();
+
+    print("########################");
+    print("lat: $lat");
+    print("lng: $lng");
+    print("########################");
 
     await searchPlaces();
     for (var i = 0; i < places.length; i++) {
@@ -70,6 +71,25 @@ class _MapPageState extends State<MapPage> {
     });
 
     initMarker();
+  }
+
+  void getCurrentLocation() async {
+    // PermissionStatus permissionStatus = await Permission.location.request();
+    // if (permissionStatus == PermissionStatus.granted) {
+    //   geolocator.Position position =
+    //       await geolocator.Geolocator.getCurrentPosition(
+    //           desiredAccuracy: geolocator.LocationAccuracy.high);
+    //   lat = position.latitude;
+    //   lng = position.longitude;
+    //   print("########################");
+    //   print("lat: $lat");
+    //   print("lng: $lng");
+    //   print("########################");
+    // } else {
+    //   print("Permission denied");
+    // }
+    lat = 10.1;
+    lng = 106.1;
   }
 
   Future<void> searchPlaces() async {
@@ -167,25 +187,6 @@ class _MapPageState extends State<MapPage> {
       final url = Uri.parse(
           'https://rsapi.goong.io/Direction?origin=$lat,$lng&destination=$latDes,$lngDes&vehicle=car&api_key=$GOONG_API');
 
-      // mapboxMap?.setBounds(CameraBoundsOptions(
-      //     bounds: CoordinateBounds(
-      //         southwest: Point(
-      //             // tay nam
-      //             coordinates: Position(
-      //           min(lng!, lngDes!),
-      //           min(lat!, latDes!),
-      //         )).toJson(),
-      //         northeast: Point(
-      //             coordinates: Position(
-      //           max(lng!, lngDes!),
-      //           max(lat!, latDes!),
-      //         )).toJson(),
-      //         infiniteBounds: true),
-      //     maxZoom: 13,
-      //     minZoom: 0,
-      //     maxPitch: 10,
-      //     minPitch: 0));
-
       // move the screen to the path
       mapboxMap?.setCamera(CameraOptions(
           center: Point(
@@ -196,7 +197,7 @@ class _MapPageState extends State<MapPage> {
       mapboxMap?.flyTo(
           CameraOptions(
               anchor: ScreenCoordinate(x: 0, y: 0),
-              zoom: 14,
+              zoom: 10,
               bearing: 0,
               pitch: 0),
           MapAnimationOptions(duration: 2000, startDelay: 0));
@@ -279,6 +280,14 @@ class _MapPageState extends State<MapPage> {
             context,
             "Chọn",
             () async {
+              if (latDes == null || lngDes == null) {
+                SnackBar snackBar = SnackBar(
+                  content: Text("Vui lòng chọn điểm đến trước khi xác nhận"),
+                  backgroundColor: Colors.green,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                return;
+              }
               // pick this restaurant
 
               // add history
@@ -290,105 +299,140 @@ class _MapPageState extends State<MapPage> {
           SizedBox(
             height: 10,
           ),
-          ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: selectedId == index
-                      ? ThemeConstants.buttonTextColor
-                      : Colors.white,
-                  border: Border(
-                    bottom: BorderSide(
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  width: MediaQuery.of(context).size.width - 40,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: selectedId == index
+                        ? Color.fromARGB(99, 236, 139, 104)
+                        : Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                    border: Border.all(
                       color: Colors.grey,
-                      width: 0.5,
+                      width: 1,
                     ),
                   ),
-                ),
-                child: ListTile(
-                  title: Row(
-                    children: [
-                      Text(
-                        details[index]['name'],
-                        style: ThemeConstants.storeTitleStyle,
-                      ),
-                      Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconText(
-                              icon: Icons.directions_car,
-                              content: details[index]['distance']['text']),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconText(
-                              icon: Icons.timer,
-                              content: details[index]['duration']['text']),
-                        ],
-                      )
-                    ],
-                  ),
-                  subtitle: Text(details[index]['formatted_address']),
-                  trailing: GestureDetector(
-                    // see path to that restaurant
-                    onTap: () async {
-                      if (latDes !=
-                              details[index]['geometry']['location']['lat'] ||
-                          lngDes !=
-                              details[index]['geometry']['location']['lng']) {
-                        removeLayer();
-                      }
-                      setState(() {
-                        latDes = details[index]['geometry']['location']['lat'];
-                        lngDes = details[index]['geometry']['location']['lng'];
-                        openList = false;
-                        selectedId = index;
-                      });
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                    child: Row(children: [
+                      GestureDetector(
+                        onTap: () async {
+                          // see path to that restaurant
+                          if (latDes !=
+                                  details[index]['geometry']['location']
+                                      ['lat'] ||
+                              lngDes !=
+                                  details[index]['geometry']['location']
+                                      ['lng']) {
+                            removeLayer();
+                          }
+                          setState(() {
+                            latDes =
+                                details[index]['geometry']['location']['lat'];
+                            lngDes =
+                                details[index]['geometry']['location']['lng'];
+                            openList = false;
+                            selectedId = index;
+                          });
 
-                      findPath();
-                    },
-                    child: Icon(
-                      Icons.forest,
-                      color: Color.fromARGB(255, 0, 128, 0),
-                      size: 30,
-                    ),
+                          findPath();
+                        },
+                        child: Container(
+                          width: 100,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              IconText(
+                                  icon: Icons.directions_car,
+                                  content: details[index]['distance']['text']),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              IconText(
+                                  icon: Icons.timer,
+                                  content: details[index]['duration']['text']),
+                            ],
+                          ),
+                        ),
+                      ),
+                      VerticalDivider(
+                        color: Colors.grey,
+                        thickness: 1,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            // see location of that restaurant
+                            if (latDes !=
+                                    details[index]['geometry']['location']
+                                        ['lat'] ||
+                                lngDes !=
+                                    details[index]['geometry']['location']
+                                        ['lng']) {
+                              removeLayer();
+                            }
+                            setState(() {
+                              latDes =
+                                  details[index]['geometry']['location']['lat'];
+                              lngDes =
+                                  details[index]['geometry']['location']['lng'];
+                              openList = false;
+                              selectedId = index;
+                            });
+                            mapboxMap?.setCamera(CameraOptions(
+                                center: Point(
+                                        coordinates: Position(
+                                            details[index]['geometry']
+                                                ['location']['lng'],
+                                            details[index]['geometry']
+                                                ['location']['lat']))
+                                    .toJson(),
+                                zoom: 12.0));
+                            mapboxMap?.flyTo(
+                                CameraOptions(
+                                    anchor: ScreenCoordinate(x: 0, y: 0),
+                                    zoom: 18,
+                                    bearing: 0,
+                                    pitch: 0),
+                                MapAnimationOptions(
+                                    duration: 2000, startDelay: 0));
+                          },
+                          child: Column(
+                            // verticalDirection: VerticalDirection.down,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                details[index]['name'],
+                                style: ThemeConstants.storeTitleStyle,
+                                overflow: TextOverflow.clip,
+                              ),
+                              Text(
+                                details[index]['formatted_address'],
+                                textAlign: TextAlign.end,
+                                style: ThemeConstants.storeSubtitleStyle,
+                                overflow: TextOverflow.clip,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ]),
                   ),
-                  onTap: () async {
-                    // see location of that restaurant
-                    if (latDes !=
-                            details[index]['geometry']['location']['lat'] ||
-                        lngDes !=
-                            details[index]['geometry']['location']['lng']) {
-                      removeLayer();
-                    }
-                    setState(() {
-                      latDes = details[index]['geometry']['location']['lat'];
-                      lngDes = details[index]['geometry']['location']['lng'];
-                      openList = false;
-                      selectedId = index;
-                    });
-                    mapboxMap?.setCamera(CameraOptions(
-                        center: Point(
-                                coordinates: Position(
-                                    details[index]['geometry']['location']
-                                        ['lng'],
-                                    details[index]['geometry']['location']
-                                        ['lat']))
-                            .toJson(),
-                        zoom: 12.0));
-                    mapboxMap?.flyTo(
-                        CameraOptions(
-                            anchor: ScreenCoordinate(x: 0, y: 0),
-                            zoom: 18,
-                            bearing: 0,
-                            pitch: 0),
-                        MapAnimationOptions(duration: 2000, startDelay: 0));
-                  },
-                ),
-              );
-            },
-            itemCount: places.length,
-            shrinkWrap: true,
+                );
+              },
+              itemCount: places.length,
+              shrinkWrap: true,
+            ),
           ),
         ],
       ),
