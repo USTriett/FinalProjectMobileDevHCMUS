@@ -69,7 +69,21 @@ class QuestionDAO {
   // Setter cho question
   set answer(String value) {
     _answer = value;
-  } 
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'options': options.join(","),
+      'question': question,
+    };
+  }
+
+  factory QuestionDAO.fromMap(Map<String, Object?> map) {
+    return QuestionDAO(
+      question: map['question'] as String,
+      options: (map['options'] as String).split(','),
+    );
+  }
 }
 
 class ListQuestionDAO {

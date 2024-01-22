@@ -37,7 +37,20 @@ class HistoryDAO{
       'restaurantAddress': restaurantAddress,
       'restaurantID': restaurantID,
       'restaurantName': restaurantName,
-      'timeStamp': Timestamp.fromDate(timeStamp),
+      'timeStamp': timeStamp.toIso8601String(),
     };
+  }
+
+  factory HistoryDAO.fromMap(Map<String, Object?> map) {
+
+    return HistoryDAO(
+      map['foodID'] as String,
+      map['foodImage'] as String,
+      map['foodName'] as String,
+      map['restaurantAddress'] as String?,
+      map['restaurantID'] as String?,
+      map['restaurantName'] as String,
+      DateTime.parse(map['timeStamp'] as String),
+    );
   }
 }

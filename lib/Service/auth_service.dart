@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:next_food/Widgets/components/popup_question.dart';
+import 'package:next_food/Widgets/pages/SplashScreen.dart';
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
 import '../Values/constants.dart';
@@ -87,7 +88,7 @@ class AuthClass {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (builder) => isVerified ? TestPage(questions: DAO.list) : VerifyEmailPage()),
+            builder: (builder) => isVerified ? SplashScreen() : VerifyEmailPage()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
@@ -148,7 +149,7 @@ class AuthClass {
         // remove the previous page from the stack and navigate to the home page.
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (builder) => TestPage(questions: DAO.list)),
+          MaterialPageRoute(builder: (builder) => SplashScreen()),
           (route) => false,
         );
       } catch (e) {

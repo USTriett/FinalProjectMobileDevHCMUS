@@ -34,7 +34,7 @@ class FoodCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
+    print("image URL${_info.imgURL}");
     return Container(
       height: 400,
       padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
@@ -47,7 +47,8 @@ class FoodCard extends StatelessWidget {
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                      image: AssetImage(_info.imgURL), fit: BoxFit.fill)),
+                      image: NetworkImage(_info.imgURL), fit: BoxFit.fill)
+              ),
             ),
             Container(
               height: 50,

@@ -18,6 +18,12 @@ class FoodDAO{
   }
   factory FoodDAO.fromSnapShot(DocumentSnapshot<Map<String, dynamic>> doc){
     final data = doc.data();
+    if(data == null)
+      print("food null");
+    else
+    {
+      print("food id: ${doc.id}");
+    }
     return FoodDAO.fromId(doc.id, data?['name'], [], data?['image'], data?['match_count'], data?['description']);
   }
   set name(String newName) {
@@ -56,5 +62,25 @@ class FoodDAO{
 
   set matchedNums(int newMatchedNums) {
     _matched_nums = newMatchedNums;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'image': this.imgURL,
+      'description': script,
+      'name':name,
+      'match_count': matchedNums,
+    };
+  }
+
+  factory FoodDAO.fromMap(Map<String, Object?> map) {
+    final String id = map['id'] as String;
+    final String name = map['name'] as String;
+    final String imgURL = map['image'] as String;
+    final int matchedNums = map['match_count'] as int;
+    final String script = map['description'] as String;
+
+    return FoodDAO.fromId(id, name, [], imgURL, matchedNums, script);
   }
 }

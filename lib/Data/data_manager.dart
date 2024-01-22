@@ -7,6 +7,7 @@ import 'package:next_food/Widgets/components/food_card.dart';
 import '../DAO/food_dao.dart';
 import '../DAO/history_dao.dart';
 import '../DAO/question_dao.dart';
+import '../Values/constants.dart';
 import 'collections.dart';
 
 class DataManager{
@@ -49,20 +50,28 @@ class DataManager{
   }
   static Future<void> increaseFoodMatch(FoodDAO food)async {
     final foodCollection = Collection.foodRef;
-    List<String> answersMap = [];
+
     int mcount = await getMatchCount(food.id);
     foodCollection.doc(food.id).update({"mactch_count" : ++mcount})
         .onError((e, _) => print("Error writing document: $e"));
 
   }
 
-  static Future<List<HistoryDAO>> getHistory() async{
+  static Future<List<HistoryDAO>> getHistory() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String? id = auth.currentUser?.uid;
     final curUser = Collection.userRef;
     final snapshot = await curUser.doc(id).get();
     List<dynamic>? currentList = snapshot.data()?['history'];
-    // List<HistoryDAO> histories = currentList == null ? [] : currentList.map((e) => e.toString());
+    currentList ??= [];
+
+    List<HistoryDAO> histories = [];
+    for (var map in currentList) {
+      HistoryDAO history = HistoryDAO.fromMap(map);
+      histories.add(history);
+    }
+
+    return histories;
   }
 
   static Future<void> addHistory(HistoryDAO history) async{
@@ -91,8 +100,22 @@ class DataManager{
 
   static Future<int> getMatchCount(String fid) async{
     final foodCollection = Collection.foodRef;
-    final snapShot = await foodCollection.where("", isEqualTo: fid).get();
-    FoodDAO food = snapShot.docs.map((e) => FoodDAO.fromSnapShot(e)).single;
+    final snapShot = await foodCollection.doc(fid).get();
+
+    FoodDAO food = FoodDAO.fromMap(snapShot.data()?['match_count']);
     return food.matchedNums;
   }
+
+  static Future<List<FoodDAO>> getAllFoods() async{
+    final foodCollection = Collection.foodRef;
+    final snapShot = await foodCollection.get();
+    return snapShot.docs.map((e) => FoodDAO.fromSnapShot(e)).toList();
+  }
+
+
+  static Future<void> loadAllData() async{
+    DAO.list = await DataManager.getAllQuestion();
+
+  }
+
 }
