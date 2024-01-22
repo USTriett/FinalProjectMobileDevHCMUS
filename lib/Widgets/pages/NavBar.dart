@@ -31,12 +31,7 @@ class NavBarComponent extends StatefulWidget {
   NavBarComponent._internal() : super(key: WidgetKey.navBarKey);
   final screens = [
     HomePage(),
-    RandomPage(foods: [
-      FoodDAO("bún riêu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon"),
-      FoodDAO("bún đậu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon"),
-      FoodDAO("bún mắm", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon"),
-      FoodDAO("bún bò", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon")
-    ]),
+    RandomPage(foods: DAO.foods),
 
     SignInPage(),
     HistoryPage(),

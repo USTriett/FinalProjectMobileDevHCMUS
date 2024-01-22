@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:next_food/DAO/history_dao.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/components/icon_text.dart';
 
-Widget historyItem(Map historyItemData) {
+Widget historyItem(HistoryDAO historyDAO) {
   // historyItemData = {
   //     'food_id': 1,
   //     'food_name': 'Bún Mắm',
@@ -30,7 +31,9 @@ Widget historyItem(Map historyItemData) {
                 borderRadius: BorderRadius.circular(15),
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage(historyItemData['food_image']))),
+                    image: NetworkImage(historyDAO.foodImage)
+                )
+            ),
           ),
         ),
         Expanded(
@@ -44,21 +47,21 @@ Widget historyItem(Map historyItemData) {
                     // navigate to map with restaurant location
                   },
                   child: Text(
-                    historyItemData['restaurant_name'],
+                    historyDAO.restaurantName,
                     style: ThemeConstants.storeTitleStyle,
                   ),
                 ),
                 Text(
-                  historyItemData['food_name'],
+                  historyDAO.foodName,
                   style: ThemeConstants.storeSubtitleStyle,
                 ),
                 IconText(
                   icon: Icons.location_on,
-                  content: historyItemData['restaurant_address'],
+                  content: historyDAO.restaurantAddress??'',
                 ),
                 IconText(
                   icon: Icons.access_time,
-                  content: historyItemData['time'],
+                  content: historyDAO.timeStamp.toIso8601String(),
                 ),
               ],
             ),

@@ -1,6 +1,8 @@
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 
 class SettingPage extends StatefulWidget{
@@ -46,10 +48,10 @@ class _SettingPageState extends State<SettingPage> {
 
 
             Container(
-              child: _buildButtonEdit("Sở thích", _hobbyEdit()),
+              child: _buildButtonEdit("Sở thích", _hobbyEdit),
             ),
             Container(
-              child: _buildButtonEdit("Đăng xuất", _logout()),
+              child: _buildButtonEdit("Đăng xuất", _logout),
             )
           ],
         ),
@@ -134,7 +136,11 @@ class _SettingPageState extends State<SettingPage> {
 
   }
 
-  _logout() {}
+  Future<void> _logout() async {
+    AuthClass auth = AuthClass();
+    await auth.logout(context);
+
+  }
 }
 
 class HobbyTag extends StatelessWidget{

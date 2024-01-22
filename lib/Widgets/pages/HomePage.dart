@@ -8,12 +8,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:next_food/Bloc/Events/navbar_events/navbar_events.dart';
 import 'package:next_food/Bloc/navbar_bloc.dart';
 import 'package:next_food/DAO/food_dao.dart';
+import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/pages/NavBar.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../../Values/constants.dart';
 import '../components/category_card.dart';
@@ -100,7 +102,11 @@ class LocationCardState extends State<LocationCard> {
     );
   }
 
-  Future<Placemark> _getCurrentLocation() async {
+  Future<Placemark>? _getCurrentLocation() async {
+    bool isAccepted = await _requestLocationPermission();
+    if(!isAccepted) {
+      return Placemark(country: "NO PERMISSION");
+    }
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
@@ -132,6 +138,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<FoodDAO> cards = DAO.foods;
+  //sap xep thu tu
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,9 +161,10 @@ class _HomePageState extends State<HomePage> {
               height: 400,
               aspectRatio: 16/9,
               viewportFraction: 0.9,
-              enableInfiniteScroll: false
+              enableInfiniteScroll: false,
+              autoPlay: true,
             ),
-            itemCount: 1,
+            itemCount: 5,
             itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
               GestureDetector(
                 onTap: (){
@@ -165,8 +174,7 @@ class _HomePageState extends State<HomePage> {
 
                   WidgetKey.navBarKey?.currentState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
                 },
-                child: FoodCard(FoodDAO("bún riêu", [false, true, false, true],
-                    "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
+                child: FoodCard(cards[itemIndex])
               )
 
           ),

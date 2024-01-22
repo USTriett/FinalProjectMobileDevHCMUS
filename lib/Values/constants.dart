@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../DAO/food_dao.dart';
+import '../DAO/history_dao.dart';
 import '../DAO/question_dao.dart';
 import '../Widgets/pages/NavBar.dart';
 import '../Widgets/pages/RandomPage.dart';
@@ -35,4 +37,6 @@ class WidgetKey{
 
 class DAO{
   static List<QuestionDAO> list = [];
+  static List<FoodDAO> foods =[];
+  static List<HistoryDAO> history = [];
 }
