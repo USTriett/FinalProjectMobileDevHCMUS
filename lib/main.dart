@@ -77,7 +77,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body: MapPage(),
+      body: MapPage(
+        searchKey: "Hủ tiếu",
+      ),
     ));
   }
 }
