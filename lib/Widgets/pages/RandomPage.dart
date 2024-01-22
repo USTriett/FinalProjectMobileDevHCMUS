@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
@@ -7,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shake/shake.dart';
 import 'package:vibration/vibration.dart';
 
@@ -29,7 +31,7 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
   late Animation<double> _animation;
   late ShakeDetector _detector;
   int index = 0;
-
+  double shakeThreshold = 20;
   @override
   void initState() {
     super.initState();
@@ -38,24 +40,46 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
+    // widget._streamSubscription = accelerometerEvents.listen(
+    //       (AccelerometerEvent event) {
+    //     // print('shake $event');
+    //         if (event.x.abs() > shakeThreshold ||
+    //             event.y.abs() > shakeThreshold
+    //             ) {
+    //           // Device is being shaken, perform desired actions here
+    //               Vibration.vibrate(duration: 200);
+    //               setState(() {
+    //                 index = (index + 1)%2;
+    //                 // widget._streamSubscription.pause();
+    //               });
+    //           // print('Device shaken!');
+    //         }
+    //   },
+    //   onError: (error) {
+    //     print("Error $e");
+    //   },
+    //   cancelOnError: true,
+    // );
     _animation = Tween<double>(begin: 0.0, end: 8.0).animate(_animationController);
-    _detector = ShakeDetector.waitForStart(
-      onPhoneShake: () {
-        // Do stuff on phone shake
-        Vibration.vibrate(duration: 400);
-        setState(() {
-          index = (index + 1) % 2; // Toggle between 0 and 1
-          _detector.stopListening();
-          _animationController.forward();
-
-        });
-      },
-    );
-    _detector.startListening();
+    // _detector = ShakeDetector.waitForStart(
+    //   shakeThresholdGravity: 3.0,
+    //   onPhoneShake: () {
+    //     // Do stuff on phone shake
+    //     Vibration.vibrate(duration: 400);
+    //     setState(() {
+    //       index = (index + 1) % 2; // Toggle between 0 and 1
+    //       _detector.stopListening();
+    //       // _animationController.forward();
+    //
+    //     });
+    //   },
+    // );
+    // _detector.startListening();
   }
 
   @override
   void dispose() {
+
     _animationController.dispose();
     super.dispose();
   }
@@ -65,13 +89,32 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
       _detector.startListening();
     else
       _detector.stopListening();
+
   }
 
   @override
   Widget build(BuildContext context) {
     int rand = Random().nextInt(widget.foods.length);
     var cards = [FoodCard(widget.foods[rand])];
+    if(index == 0){
+      _detector = ShakeDetector.waitForStart(
+        shakeThresholdGravity: 4.0,
+        onPhoneShake: () {
+          // Do stuff on phone shake
+          Vibration.vibrate(duration: 400);
+          setState(() {
+            index = (index + 1) % 2; // Toggle between 0 and 1
+            _detector.stopListening();
+            // _animationController.forward();
 
+          });
+        },
+      );
+      _detector.startListening();
+    }
+    else{
+      _detector.stopListening();
+    }
     // TODO: implement build
     return SafeArea(
         child: (index == 0) ? Column(
@@ -101,10 +144,7 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
     BlocProvider<SwiperBloc>(
         create: (context) => SwiperBloc(),
         child:
-        AnimatedBuilder(
-        animation: _animationController,
-        builder: (BuildContext context, Widget? child) {
-          return Container(
+        Container(
               alignment: Alignment.center,
               child: FoodSwiper(
                 context: context,
@@ -112,14 +152,14 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
                 like: () {},
                 dislike: () {
                   setState(() {
+                    // print(cards[0])
                     index = (index + 1) % 2; // Toggle between 0 and 1
-                    _detector.startListening();
+                    // widget._streamSubscription.resume();
                   });
                 },
               ),
-            );
-        }
-    )
+            )
+
     ),
 
     );
