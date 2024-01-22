@@ -1,10 +1,12 @@
 import 'package:floating_pullup_card/floating_pullup_card.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Widgets/components/color_button.dart';
 import 'package:next_food/Widgets/components/icon_text.dart';
 
 class MapPage extends StatefulWidget {
@@ -36,6 +38,7 @@ class _MapPageState extends State<MapPage> {
 
   // open list of places
   bool openList = true;
+  int? selectedId;
 
   MapboxMap? mapboxMap;
 
@@ -44,6 +47,14 @@ class _MapPageState extends State<MapPage> {
 
   _onMapCreated(MapboxMap mapboxMap) async {
     this.mapboxMap = mapboxMap;
+
+    // get current location
+    // geolocator.Position position =
+    //     await geolocator.Geolocator.getCurrentPosition(
+    //         desiredAccuracy: geolocator.LocationAccuracy.high);
+    // print("########################");
+    // print(position);
+    // print("########################");
 
     await searchPlaces();
     for (var i = 0; i < places.length; i++) {
@@ -252,10 +263,30 @@ class _MapPageState extends State<MapPage> {
       ),
       body: Column(
         children: [
+          SizedBox(
+            height: 50,
+          ),
+          colorButton(
+            context,
+            "Chọn",
+            () async {
+              // pick this restaurant
+
+              // add history
+
+              // open google map intent with start and end location
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
           ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 decoration: BoxDecoration(
+                  color: selectedId == index
+                      ? ThemeConstants.buttonTextColor
+                      : Colors.white,
                   border: Border(
                     bottom: BorderSide(
                       color: Colors.grey,
@@ -301,6 +332,7 @@ class _MapPageState extends State<MapPage> {
                         latDes = details[index]['geometry']['location']['lat'];
                         lngDes = details[index]['geometry']['location']['lng'];
                         openList = false;
+                        selectedId = index;
                       });
 
                       findPath();
@@ -323,6 +355,7 @@ class _MapPageState extends State<MapPage> {
                       latDes = details[index]['geometry']['location']['lat'];
                       lngDes = details[index]['geometry']['location']['lng'];
                       openList = false;
+                      selectedId = index;
                     });
                     mapboxMap?.setCamera(CameraOptions(
                         center: Point(
@@ -340,12 +373,6 @@ class _MapPageState extends State<MapPage> {
                             bearing: 0,
                             pitch: 0),
                         MapAnimationOptions(duration: 2000, startDelay: 0));
-                  },
-                  onLongPress: () async {
-                    // pick this restaurant
-                    // add history
-
-                    // open google map intent with start and end location
                   },
                 ),
               );
