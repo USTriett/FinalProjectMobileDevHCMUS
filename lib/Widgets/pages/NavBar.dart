@@ -1,10 +1,15 @@
+import 'dart:math';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
 import 'package:next_food/Widgets/pages/HomePage.dart';
+import 'package:next_food/Widgets/pages/RandomPage.dart';
+import 'package:next_food/Widgets/pages/SettingPage.dart';
 
 import 'package:next_food/Widgets/pages/SignInPage.dart';
 import 'package:next_food/Widgets/pages/SignUpPage.dart';
@@ -24,10 +29,10 @@ class _NavBar extends State<NavBar> {
 
   final screens = [
     HomePage(),
-    SignUpPage(),
+    RandomPage(foods: [],),
     SignInPage(),
-    HomePage(),
-    SignUpPage(),
+    HistoryPage(),
+    SettingPage(),
   ];
 
   @override

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,26 +7,29 @@ import 'package:geolocator/geolocator.dart';
 import 'package:next_food/Bloc/States/swiper_states/swiper_states.dart';
 import 'package:next_food/Bloc/swiper_bloc.dart';
 import 'package:next_food/DAO/food_dao.dart';
+import 'package:next_food/DAO/question_dao.dart';
 import 'package:next_food/Data/data_manager.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/components/popup_question.dart';
+import 'package:next_food/Widgets/components/question_item.dart';
 import 'package:next_food/Widgets/pages/HistoryPage.dart';
-
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
 import 'package:next_food/Widgets/components/logo.dart';
-
+import 'package:next_food/Widgets/pages/RandomPage.dart';
+import 'package:next_food/Widgets/pages/SettingPage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'Widgets/pages/HomePage.dart';
 import 'Widgets/pages/SignUpPage.dart';
 import 'Widgets/pages/SignInPage.dart';
 import 'firebase_options.dart';
 
-  import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
-
 
 void main() async {
   // // All widgets need to be initialized before they can be used.
@@ -36,10 +38,7 @@ void main() async {
   // Initialize Firebase.
   await Firebase.initializeApp();
 
-
   runApp(MyApp());
-
-
 }
 
 class MyApp extends StatefulWidget {
@@ -52,81 +51,34 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+/*=======
+  Widget currentPage = const SignInPage();
+  AuthClass authClass = AuthClass();
+  FirebaseAuth auth = FirebaseAuth.instance;
 
+  void checkLogin() async {
+    String? token = await authClass.getToken();
+    bool isVerified = auth.currentUser!.emailVerified;
+
+    if (token != null) {
+      setState(() {
+        currentPage = (isVerified ? const HomePage() : const VerifyEmailPage());
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkLogin();
+  }
+>>>>>> Vy-active*/
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-      home: Scaffold(
-        bottomNavigationBar: CurvedNavigationBar(
-          key: _bottomNavigationKey,
-          index: 0,
-          height: 60.0,
-          items: <Widget>[
-            Container(
-              height: 50,
-              child: Column(
-                children: [Icon(Icons.add, size: 30), Text("page 1")],
-              ),
-            ),
-            Container(
-              height: 50,
-              child: Column(
-                children: [Icon(Icons.list, size: 30), Text("page 2")],
-              ),
-            ),
-            Icon(Icons.compare_arrows, size: 30),
-            Icon(Icons.call_split, size: 30),
-            Icon(Icons.perm_identity, size: 30),
-          ],
-          color: Colors.white,
-          buttonBackgroundColor: Colors.white,
-          backgroundColor: Colors.blueAccent,
-          animationCurve: Curves.easeInOut,
-          animationDuration: Duration(milliseconds: 600),
-          onTap: (index) {
-            setState(() {
-              _page = index;
-            });
-          },
-          letIndexChange: (index) => true,
-        ),
-        body: Container(
-          color: Colors.blueAccent,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(_page.toString(), textScaleFactor: 10.0),
-                ElevatedButton(
-                  child: Text('go to page of index 1'),
-                  onPressed: () {
-                    final CurvedNavigationBarState? navbarstate =
-                        _bottomNavigationKey.currentState;
-                    navbarstate?.setPage(1);
-                  },
-                )
-              ],
-            ),
-          ),
-        ))
-
-    );
-}
-
-  // @override
-  // Widget build(BuildContext context){
-  //   return MaterialApp(
-  //     home: Scaffold(
-  //       backgroundColor: Colors.blue,
-  //       appBar: AppBar(
-  //         title: Text('Curved Nav Bar', textDirection: TextDirection.rtl,),
-  //         elevation: 0,
-  //         centerTitle: true,
-  //       ),
-  //       body: Container(),
-  //     ),
-  //   );
-  // }
+        home: Scaffold(
+      body: TestPage(),
+    ));
+  }
 }
 
