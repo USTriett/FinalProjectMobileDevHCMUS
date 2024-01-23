@@ -17,6 +17,7 @@ import '../../Bloc/swiper_bloc.dart';
 import '../../DAO/food_dao.dart';
 import '../../Values/constants.dart';
 import '../components/logo.dart';
+import '../components/tutorial_swipe_component.dart';
 
 class RandomPage extends StatefulWidget{
   final List<FoodDAO> foods;
@@ -38,44 +39,12 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
     super.initState();
 
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
-    // widget._streamSubscription = accelerometerEvents.listen(
-    //       (AccelerometerEvent event) {
-    //     // print('shake $event');
-    //         if (event.x.abs() > shakeThreshold ||
-    //             event.y.abs() > shakeThreshold
-    //             ) {
-    //           // Device is being shaken, perform desired actions here
-    //               Vibration.vibrate(duration: 200);
-    //               setState(() {
-    //                 index = (index + 1)%2;
-    //                 // widget._streamSubscription.pause();
-    //               });
-    //           // print('Device shaken!');
-    //         }
-    //   },
-    //   onError: (error) {
-    //     print("Error $e");
-    //   },
-    //   cancelOnError: true,
-    // );
+
     _animation = Tween<double>(begin: 0.0, end: 1).animate(_animationController);
-    // _detector = ShakeDetector.waitForStart(
-    //   shakeThresholdGravity: 3.0,
-    //   onPhoneShake: () {
-    //     // Do stuff on phone shake
-    //     Vibration.vibrate(duration: 400);
-    //     setState(() {
-    //       index = (index + 1) % 2; // Toggle between 0 and 1
-    //       _detector.stopListening();
-    //       // _animationController.forward();
-    //
-    //     });
-    //   },
-    // );
-    // _detector.startListening();
+
     _animationController.forward();
   }
 
@@ -146,38 +115,51 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
               ],
             ):
 
-    FadeTransition(
-      opacity: _animation,
-      child: BlocProvider<SwiperBloc>(
-          create: (context) => SwiperBloc(),
-          child:
-          Container(
-                alignment: Alignment.center,
-                child: FoodSwiper(
-                  context: context,
-                  foodCards: cards,
-                  like: () {
+    BlocProvider<SwiperBloc>(
+        create: (context) => SwiperBloc(),
+        child:
+        Center(
+          child: Column(
+            children: [
+              Container(
+                height: 450,
+                padding: EdgeInsets.fromLTRB(50, 50, 50, 0),
+                    // color: Colors.green,
+                    alignment: Alignment.center,
+                    child: FadeTransition(
+                      opacity: _animation,
+                      child: FoodSwiper(
+                        context: context,
+                        foodCards: cards,
+                        like: () {
 
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context)=> MapPage(food: food))
-                    );
-                    setState(() {
-                      // print(cards[0])
-                      index = (index + 1) % 2; // Toggle between 0 and 1
-                      // widget._streamSubscription.resume();
-                    });
-                  },
-                  dislike: () {
-                    setState(() {
-                      // print(cards[0])
-                      index = (index + 1) % 2; // Toggle between 0 and 1
-                      // widget._streamSubscription.resume();
-                    });
-                  },
-                ),
+                          Navigator.push(context,
+                          MaterialPageRoute(builder: (context)=> MapPage(food: food))
+                          );
+                          setState(() {
+                            // print(cards[0])
+                            index = (index + 1) % 2; // Toggle between 0 and 1
+                            // widget._streamSubscription.resume();
+                          });
+                        },
+                        dislike: () {
+                          setState(() {
+                            // print(cards[0])
+                            index = (index + 1) % 2; // Toggle between 0 and 1
+                            // widget._streamSubscription.resume();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+              SwipeTutorialComponent(
+                height: 100,
+                 width: 100,
               )
+            ],
+          ),
+        )
 
-      ),
     ),
 
     );
