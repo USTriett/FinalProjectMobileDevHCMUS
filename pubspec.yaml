@@ -52,6 +52,13 @@ dependencies:
   permission_handler: ^11.1.0
 
   curved_navigation_bar: ^1.0.3
+  mapbox_maps_flutter: ^0.4.4
+  http: ^1.2.0
+  flutter_polyline_points: ^2.0.0
+  floating_pullup_card: ^1.2.0
+  flutter_placeholder_textlines: ^1.2.0
+  swipeable_tile: ^2.0.0+3
+  url_launcher: ^6.2.3
 
   shake: ^2.2.0
   vibration: ^1.8.4

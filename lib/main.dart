@@ -18,7 +18,11 @@ import 'package:next_food/Widgets/components/foods_swiper.dart';
 import 'package:next_food/Widgets/components/popup_question.dart';
 import 'package:next_food/Widgets/components/question_item.dart';
 import 'package:next_food/Widgets/pages/HistoryPage.dart';
+
 import 'package:next_food/Widgets/pages/SplashScreen.dart';
+
+import 'package:next_food/Widgets/pages/MapPage.dart';
+
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
 
 import 'package:next_food/Widgets/components/logo.dart';
@@ -38,6 +42,7 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 
+
 Future<void> deleteDatabaseFile() async {
   // Lấy thư mục lưu trữ ứng dụng
   final appDir = await getApplicationDocumentsDirectory();
@@ -46,6 +51,7 @@ Future<void> deleteDatabaseFile() async {
   // Xóa cơ sở dữ liệu SQLite
   await deleteDatabase(dbPath);
 }
+
 void main() async {
   // // All widgets need to be initialized before they can be used.
 
@@ -55,6 +61,7 @@ void main() async {
   await deleteDatabaseFile();
 
   await SqliteData.insertAllData();
+
   runApp(MyApp());
 }
 
@@ -96,6 +103,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
 
+
       home: currentPage,
 
     );
@@ -122,4 +130,7 @@ class _MyAppState extends State<MyApp> {
   }
 >>>>>>> Eric*/
 }
+
+
+
 

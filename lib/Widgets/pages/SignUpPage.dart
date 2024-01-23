@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:next_food/Service/auth_service.dart';
+import 'package:next_food/Themes/theme_constants.dart';
 
 import '../components/color_button.dart';
 import '../components/text_item.dart';
@@ -34,17 +35,14 @@ class _SignUpPageState extends State<SignUpPage> {
           // Use MediaQuery to get the screen size.
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.black,
+          color: ThemeConstants.backgroundColor,
           child: Column(
             // Align the children to the center of the screen.
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Sign Up',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold),
+                style: ThemeConstants.titleStyle,
               ),
               SizedBox(
                 height: 20,
@@ -83,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Text(
                     'If you already have an account?',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: ThemeConstants.textColor,
                       fontSize: 16,
                     ),
                   ),
@@ -101,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Text(
                       'Sign In',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: ThemeConstants.subTextColor,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),

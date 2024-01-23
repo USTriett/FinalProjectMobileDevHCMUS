@@ -9,9 +9,9 @@ Widget colorButton(BuildContext context, String name, void Function()? onTap) {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xfffd746c),
+            Color(0xFFFFB901),
             Color(0xffff9068),
-            Color(0xfffd746c),
+            Color(0xFFFFB901),
           ],
         ),
         borderRadius: BorderRadius.circular(20),

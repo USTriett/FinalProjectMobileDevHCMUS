@@ -15,6 +15,7 @@ class ThemeConstants {
     fontWeight: FontWeight.bold,
     color: titleColor,
   );
+
 //Text
   static const TextStyle textStyleLarge = TextStyle(
     fontSize: 24,
