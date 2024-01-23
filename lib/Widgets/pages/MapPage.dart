@@ -406,58 +406,13 @@ class _MapPageState extends State<MapPage> {
             ),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Row(children: [
-                GestureDetector(
-                  onTap: () async {
-                    // see path to that restaurant
-                    if (latDes !=
-                        details[index]['geometry']['location']
-                        ['lat'] ||
-                        lngDes !=
-                            details[index]['geometry']['location']
-                            ['lng']) {
-                      removeLayer();
-                    }
-                    setState(() {
-                      latDes =
-                      details[index]['geometry']['location']['lat'];
-                      lngDes =
-                      details[index]['geometry']['location']['lng'];
-                      openList = false;
-                      selectedId = index;
-                    });
-
-                    findPath();
-                  },
-                  child: Container(
-                    width: 100,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IconText(
-                            icon: Icons.directions_car,
-                            content: details[index]['distance']['text']),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        IconText(
-                            icon: Icons.timer,
-                            content: details[index]['duration']['text']),
-                      ],
-                    ),
-                  ),
-                ),
-                VerticalDivider(
-                  color: Colors.grey,
-                  thickness: 1,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                Expanded(
-                  child: GestureDetector(
+              child: Container(
+                width: MediaQuery.of(context).size.width - 30,
+                child: Row(
+                    children: [
+                  GestureDetector(
                     onTap: () async {
-                      // see location of that restaurant
+                      // see path to that restaurant
                       if (latDes !=
                           details[index]['geometry']['location']
                           ['lat'] ||
@@ -474,45 +429,114 @@ class _MapPageState extends State<MapPage> {
                         openList = false;
                         selectedId = index;
                       });
-                      mapboxMap?.setCamera(CameraOptions(
-                          center: Point(
-                              coordinates: GEOJSON.Position(
-                                  details[index]['geometry']
-                                  ['location']['lng'],
-                                  details[index]['geometry']
-                                  ['location']['lat']))
-                              .toJson(),
-                          zoom: 12.0));
-                      mapboxMap?.flyTo(
-                          CameraOptions(
-                              anchor: ScreenCoordinate(x: 0, y: 0),
-                              zoom: 18,
-                              bearing: 0,
-                              pitch: 0),
-                          MapAnimationOptions(
-                              duration: 2000, startDelay: 0));
+
+                      findPath();
                     },
-                    child: Column(
-                      // verticalDirection: VerticalDirection.down,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          details[index]['name'],
-                          style: ThemeConstants.storeTitleStyle,
-                          overflow: TextOverflow.clip,
-                        ),
-                        Text(
-                          details[index]['formatted_address'],
-                          textAlign: TextAlign.end,
-                          style: ThemeConstants.storeSubtitleStyle,
-                          overflow: TextOverflow.clip,
-                        ),
-                      ],
+                    child: Container(
+                      width: 100,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IconText(
+                              icon: Icons.directions_car,
+                              content: details[index]['distance']['text']),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          IconText(
+                              icon: Icons.timer,
+                              content: details[index]['duration']['text']),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ]),
+                  VerticalDivider(
+                    color: Colors.grey,
+                    thickness: 1,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        // see location of that restaurant
+                        if (latDes !=
+                            details[index]['geometry']['location']
+                            ['lat'] ||
+                            lngDes !=
+                                details[index]['geometry']['location']
+                                ['lng']) {
+                          removeLayer();
+                        }
+                        setState(() {
+                          latDes =
+                          details[index]['geometry']['location']['lat'];
+                          lngDes =
+                          details[index]['geometry']['location']['lng'];
+                          openList = false;
+                          selectedId = index;
+                        });
+                        mapboxMap?.setCamera(CameraOptions(
+                            center: Point(
+                                coordinates: GEOJSON.Position(
+                                    details[index]['geometry']
+                                    ['location']['lng'],
+                                    details[index]['geometry']
+                                    ['location']['lat']))
+                                .toJson(),
+                            zoom: 12.0));
+                        mapboxMap?.flyTo(
+                            CameraOptions(
+                                anchor: ScreenCoordinate(x: 0, y: 0),
+                                zoom: 18,
+                                bearing: 0,
+                                pitch: 0),
+                            MapAnimationOptions(
+                                duration: 2000, startDelay: 0));
+                      },
+                      child: Column(
+                        // verticalDirection: VerticalDirection.down,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.amber,
+                              ),
+                              Container(
+                                width: 150,
+                                child: Text(
+
+                                  details[index]['name'],
+                                  // textAlign: TextAlign.end,
+                                  maxLines: 1,
+                                  style: ThemeConstants.storeTitleStyle,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Wrap(
+                            children: [
+
+                              Text(
+                                (details[index]['formatted_address'] as String).replaceAll("${details[index]['name']}, ", "") ,
+                                // textAlign: TextAlign.end,
+                                maxLines: 3,
+                                style: ThemeConstants.storeSubtitleStyle,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
             ),
           );
         },

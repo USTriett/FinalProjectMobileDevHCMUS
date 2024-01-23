@@ -80,8 +80,8 @@ class _FoodSwiperState extends State<FoodSwiper> {
             Align(
               alignment: Alignment.center,
               child: Container(
-                height: MediaQuery.of(context).size.height/1.5,
-                width: MediaQuery.of(context).size.width/1.2,
+                // height: MediaQuery.of(context).size.height/1.5,
+                // width: MediaQuery.of(context).size.width/1.2,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                   // color: Colors.green

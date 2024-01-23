@@ -1,9 +1,18 @@
 
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:next_food/DAO/food_dao.dart';
+import 'package:next_food/DAO/history_dao.dart';
+import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Widgets/components/tutorial_swipe_component.dart';
+import 'package:next_food/Widgets/pages/MapPage.dart';
+
+import '../../Values/constants.dart';
 
 class SettingPage extends StatefulWidget{
   const SettingPage({super.key});
@@ -16,6 +25,14 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    Set<String> foodIDs = {};
+    Set<String> restaurantAddresses = {};
+    for(HistoryDAO h in DAO.history){
+      foodIDs.add(h.foodID);
+      if(h.restaurantAddress != null) {
+        restaurantAddresses.add(h.restaurantAddress!);
+      }
+    }
     return SafeArea(
 
       child: Container(
@@ -42,10 +59,116 @@ class _SettingPageState extends State<SettingPage> {
                ]
             ),
 
-
+            Center(
+              child: Container(
+                height: 100,
+                width: 240,
+                // color: Colors.grey,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      margin: EdgeInsets.fromLTRB(5, 5, 0, 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 6),
+                            child: SvgPicture.asset(
+                              'assets/restaurantIcon.svg',
+                              width: 40, // Adjust the width as needed
+                              height: 40,
+                              color: Colors.amber[700],// Adjust the height as needed
+                            ),
+                          ),
+                          Text("${restaurantAddresses.length}", style: ThemeConstants.textStyleMedium)
+                        ],
+                      ),
+                    ),
+                    // Container(
+                    //   width: 2,
+                    //   height: 80,
+                    //   color: Colors.black54,
+                    // ),
+                    Container(
+                      height: 100,
+                      width: 100,
+                      margin: EdgeInsets.fromLTRB(5,5,0,5),
+                      // color: Colors.red,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 6),
+                            child: SvgPicture.asset(
+                              "assets/foodIcon.svg",
+                              height: 40,
+                              width: 40,
+                              color: Colors.amber[700],
+                            )
+                          ),
+                          Text("${foodIDs.length}", style: ThemeConstants.textStyleMedium)
+                        ],
+                      )
+                    )
+                  ],
+                ),
+              ),
+            ),
 
             Container(
-              child: _buildButtonEdit("Sở thích", _hobbyEdit),
+              child: _ButtonEdit(
+                callback: () async{
+                  Set<FoodDAO> foods = {};
+                  for(HistoryDAO h in DAO.history) {
+                    FoodDAO dao = await SqliteData.getFoodByName(h.foodName);
+                    foods.add(dao);
+                  }
+
+                  showDialog(
+                      context: context,
+                      builder: (context){
+                        _dismissDialog() {
+                          Navigator.pop(context);
+                          setState(() {
+
+                          });
+                        }
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            side: BorderSide(
+                              color: Colors.black,
+                              width: 2.0,
+                            ),
+                          ),
+                          content: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Container(
+                                // color: Colors.grey,
+                                height: 500,
+                                margin: EdgeInsets.fromLTRB(0, 60, 0, 60),
+                                width: double.maxFinite,
+                                child: _buildGridFood(
+                                  foods: foods.toList(),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: _dismissDialog,
+                              ),
+                            ],
+                          ),
+
+                        );
+                      }
+                  );
+                },
+                text: "Danh sách món ăn đã chọn",
+              ),
             ),
             Container(
               child: _ButtonEdit(
@@ -55,7 +178,8 @@ class _SettingPageState extends State<SettingPage> {
                 },
                 text: "Đăng xuất",
               ),
-            )
+            ),
+
           ],
         ),
       ),
@@ -143,6 +267,40 @@ class _SettingPageState extends State<SettingPage> {
     AuthClass auth = AuthClass();
     await auth.logout(context);
 
+  }
+
+  Widget _buildGridFood({required List<FoodDAO> foods}) {
+    return GridView.count(
+      // Create a grid with 2 columns. If you change the scrollDirection to
+      // horizontal, this produces 2 rows.
+      crossAxisCount: 3,
+      // Generate 100 widgets that display their index in the List.
+      children: List.generate(foods.length, (index) {
+        return GestureDetector(
+          onTap: (){
+            Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) => MapPage(food: foods[index])
+                )
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.all(5),
+            height: 300,
+            width: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                image: CachedNetworkImageProvider(
+                  foods[index].imgURL
+                ),
+                fit: BoxFit.fill
+              )
+            ),
+          ),
+        );
+      }),
+    );
   }
 }
 class _ButtonEdit extends StatelessWidget {

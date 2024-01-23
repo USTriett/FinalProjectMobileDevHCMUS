@@ -84,4 +84,16 @@ class FoodDAO{
 
     return FoodDAO.fromId(id, name, [], imgURL, matchedNums, script);
   }
+
+
+  @override
+  int get hashCode {
+    return id.hashCode;
+  }
+
+  @override
+  bool operator ==(other) {
+    return other is FoodDAO &&
+        id == other.id;
+  }
 }
