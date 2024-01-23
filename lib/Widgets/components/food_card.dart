@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/Themes/theme_constants.dart';
@@ -47,7 +48,12 @@ class FoodCard extends StatelessWidget {
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                      image: NetworkImage(_info.imgURL), fit: BoxFit.fill)
+                      image: CachedNetworkImageProvider(
+                        _info.imgURL,
+
+                      ),
+                    fit: BoxFit.fill
+                  )
               ),
             ),
             Container(

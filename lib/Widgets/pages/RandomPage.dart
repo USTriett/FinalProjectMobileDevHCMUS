@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
+import 'package:next_food/Widgets/pages/MapPage.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shake/shake.dart';
 import 'package:vibration/vibration.dart';
@@ -60,7 +61,7 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
     //   },
     //   cancelOnError: true,
     // );
-    _animation = Tween<double>(begin: 0.0, end: 8.0).animate(_animationController);
+    _animation = Tween<double>(begin: 0.0, end: 1).animate(_animationController);
     // _detector = ShakeDetector.waitForStart(
     //   shakeThresholdGravity: 3.0,
     //   onPhoneShake: () {
@@ -75,6 +76,7 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
     //   },
     // );
     // _detector.startListening();
+    _animationController.forward();
   }
 
   @override
@@ -94,8 +96,10 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
+    _animationController.forward();
     int rand = Random().nextInt(widget.foods.length);
-    var cards = [FoodCard(widget.foods[rand])];
+    FoodDAO food = widget.foods[rand];
+    var cards = [FoodCard(food)];
     if(index == 0){
       _detector = ShakeDetector.waitForStart(
         shakeThresholdGravity: 4.0,
@@ -141,25 +145,39 @@ class RandomPageState extends State<RandomPage> with SingleTickerProviderStateMi
                 ),
               ],
             ):
-    BlocProvider<SwiperBloc>(
-        create: (context) => SwiperBloc(),
-        child:
-        Container(
-              alignment: Alignment.center,
-              child: FoodSwiper(
-                context: context,
-                foodCards: cards,
-                like: () {},
-                dislike: () {
-                  setState(() {
-                    // print(cards[0])
-                    index = (index + 1) % 2; // Toggle between 0 and 1
-                    // widget._streamSubscription.resume();
-                  });
-                },
-              ),
-            )
 
+    FadeTransition(
+      opacity: _animation,
+      child: BlocProvider<SwiperBloc>(
+          create: (context) => SwiperBloc(),
+          child:
+          Container(
+                alignment: Alignment.center,
+                child: FoodSwiper(
+                  context: context,
+                  foodCards: cards,
+                  like: () {
+
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context)=> MapPage(food: food))
+                    );
+                    setState(() {
+                      // print(cards[0])
+                      index = (index + 1) % 2; // Toggle between 0 and 1
+                      // widget._streamSubscription.resume();
+                    });
+                  },
+                  dislike: () {
+                    setState(() {
+                      // print(cards[0])
+                      index = (index + 1) % 2; // Toggle between 0 and 1
+                      // widget._streamSubscription.resume();
+                    });
+                  },
+                ),
+              )
+
+      ),
     ),
 
     );

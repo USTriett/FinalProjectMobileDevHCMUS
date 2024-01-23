@@ -19,7 +19,7 @@ class _SettingPageState extends State<SettingPage> {
     return SafeArea(
 
       child: Container(
-        color: Colors.tealAccent,
+        color: Colors.white,
         child: Column(
           children: [
             Stack(
@@ -41,17 +41,20 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                ]
             ),
-            _buildHobbyTags([
-              HobbyTag(tagName: "Phở gà"),
-              HobbyTag(tagName: "Phở"),
-            ]),
+
 
 
             Container(
               child: _buildButtonEdit("Sở thích", _hobbyEdit),
             ),
             Container(
-              child: _buildButtonEdit("Đăng xuất", _logout),
+              child: _ButtonEdit(
+                callback: (){
+                  AuthClass auth = AuthClass();
+                  auth.logout(context);
+                },
+                text: "Đăng xuất",
+              ),
             )
           ],
         ),
@@ -66,7 +69,7 @@ class _SettingPageState extends State<SettingPage> {
         height: 50,
         padding: const EdgeInsets.fromLTRB(25,0,25,0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.amber,
           borderRadius: BorderRadius.circular(20),
         ),
         child: GestureDetector(
@@ -142,6 +145,45 @@ class _SettingPageState extends State<SettingPage> {
 
   }
 }
+class _ButtonEdit extends StatelessWidget {
+  final Function _callback;
+  final String _text;
+
+  _ButtonEdit({required Function callback, required String text})
+      : _callback = callback,
+        _text = text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(25, 15, 25, 0),
+      child: GestureDetector(
+        onTap: () {
+          _callback();
+        },
+        child: Container(
+          height: 50,
+          padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+          decoration: BoxDecoration(
+            color: Colors.amber,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _text,
+                style: ThemeConstants.textStyleSmall,
+              ),
+              Icon(Icons.navigate_next),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 class HobbyTag extends StatelessWidget{
   final String tagName;

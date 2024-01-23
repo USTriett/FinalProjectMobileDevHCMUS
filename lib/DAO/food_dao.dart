@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FoodDAO{
@@ -16,6 +16,7 @@ class FoodDAO{
   String get name {
     return _name;
   }
+
   factory FoodDAO.fromSnapShot(DocumentSnapshot<Map<String, dynamic>> doc){
     final data = doc.data();
     if(data == null)
