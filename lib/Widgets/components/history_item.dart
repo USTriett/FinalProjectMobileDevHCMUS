@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/DAO/history_dao.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Widgets/components/icon_text.dart';
+import 'package:next_food/Widgets/pages/MapPage.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-Widget historyItem(HistoryDAO historyDAO) {
+import '../../Values/constants.dart';
+void openGoogleMapsDirections(String addressDestination) async {
+  final url =
+      'google.navigation:q=$addressDestination';
+  if (!await launchUrl(Uri.parse(url))) {
+    throw 'Could not launch $url';
+  }
+}
+Widget historyItem(HistoryDAO historyDAO, BuildContext context) {
   // historyItemData = {
   //     'food_id': 1,
   //     'food_name': 'Bún Mắm',
@@ -21,6 +32,18 @@ Widget historyItem(HistoryDAO historyDAO) {
         GestureDetector(
           onTap: () {
             // navigate to map with search key = food name
+            for(FoodDAO f in DAO.foods){
+              if(f.id == historyDAO.foodID){
+                Navigator.push(context,
+                  MaterialPageRoute(
+                      builder:(context)=>MapPage(food: f)
+                  )
+                );
+                break;
+              }
+
+            }
+
           },
           child: Container(
             // margin: EdgeInsets.all(5),
@@ -44,7 +67,8 @@ Widget historyItem(HistoryDAO historyDAO) {
               children: [
                 InkWell(
                   onTap: () {
-                    // navigate to map with restaurant location
+                    // navigate to google map with restaurant location
+                    openGoogleMapsDirections(historyDAO.restaurantAddress??historyDAO.restaurantName);
                   },
                   child: Text(
                     historyDAO.restaurantName,

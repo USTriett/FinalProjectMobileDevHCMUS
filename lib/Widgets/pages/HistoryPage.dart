@@ -72,26 +72,25 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              AppLogoWidget(),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              Expanded(
-                child: ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    return historyItem(historyData[index]);
-                  },
-                  itemCount: historyData.length,
-                  scrollDirection: Axis.vertical,
-                ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Column(
+          children: [
+            AppLogoWidget(),
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return historyItem(historyData[index], context);
+                },
+                itemCount: historyData.length,
+                scrollDirection: Axis.vertical,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

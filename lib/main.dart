@@ -85,6 +85,7 @@ class _MyAppState extends State<MyApp> {
     bool isVerified = auth.currentUser!.emailVerified;
 
     if (token != null) {
+      print('token $token');
       setState(() {
         authClass.test();
         currentPage = (isVerified ? const SplashScreen() : const VerifyEmailPage());

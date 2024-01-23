@@ -13,6 +13,7 @@ import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
+import 'package:next_food/Widgets/pages/MapPage.dart';
 import 'package:next_food/Widgets/pages/NavBar.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sqflite/sqflite.dart';
@@ -144,68 +145,75 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Expanded(
-          child: ListView(
-        children: [
-          Container(
+      child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 60),
+            child: ListView(
+                    children: [
+            Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: LocationCard()),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 10, 20, 20),
+              alignment: Alignment.center,
+              child: AppLogoWidget(),
+            ),
+            CarouselSlider.builder(
+              options: CarouselOptions(
+                height: 400,
+                aspectRatio: 16/9,
+                viewportFraction: 0.9,
+                enableInfiniteScroll: false,
+                autoPlay: true,
+              ),
+              itemCount: 5,
+              itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                GestureDetector(
+                  onTap: (){
+                    // CurvedNavigationBarState? navBarState =
+                    //     WidgetKey.bottomNavigationKey.currentState;
+                    // navBarState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
+                    //
+                    // WidgetKey.navBarKey?.currentState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MapPage(food: cards[itemIndex]))
+                    );
+                  },
+                  child: FoodCard(cards[itemIndex])
+                )
+
+            ),
+
+            Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: LocationCard()),
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 10, 20, 20),
-            alignment: Alignment.center,
-            child: AppLogoWidget(),
-          ),
-          CarouselSlider.builder(
-            options: CarouselOptions(
-              height: 400,
-              aspectRatio: 16/9,
-              viewportFraction: 0.9,
-              enableInfiniteScroll: false,
-              autoPlay: true,
+              margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                  ),
+                  SizedBox(
+                      width: 8), // Adjust the spacing between the icon and text
+                  Text(
+                    "Categories",
+                    style: ThemeConstants.buttonStyle,
+                  ),
+                ],
+              ),
             ),
-            itemCount: 5,
-            itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-              GestureDetector(
-                onTap: (){
-                  CurvedNavigationBarState? navBarState =
-                      WidgetKey.bottomNavigationKey.currentState;
-                  navBarState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
-
-                  WidgetKey.navBarKey?.currentState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
-                },
-                child: FoodCard(cards[itemIndex])
-              )
-
-          ),
-
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.star,
-                  color: Colors.yellow,
-                ),
-                SizedBox(
-                    width: 8), // Adjust the spacing between the icon and text
-                Text(
-                  "Categories",
-                  style: ThemeConstants.buttonStyle,
-                ),
-              ],
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Row(children: [
+                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
+                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
+              ]),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Row(children: [
-              CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
-              CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
-            ]),
-          ),
-        ],
-      )),
+                    ],
+                  ),
+          )),
     ));
   }
 }

@@ -109,11 +109,10 @@ class NavBar extends State<NavBarComponent> {
       child: Scaffold(
         extendBody: false,
         bottomNavigationBar: navBar,
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-          child: widget.screens[page]
-
-          )
+        body: Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: widget.screens[page],
+        )
         ),
       );
   }

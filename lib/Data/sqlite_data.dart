@@ -46,13 +46,14 @@ class SqliteData{
           ")");
       print("food created");
       await db.execute("CREATE TABLE HISTORY ("
-          "foodID TEXT PRIMARY KEY,"
+          "foodID TEXT,"
           "foodImage TEXT,"
           "foodName TEXT,"
           "restaurantAddress TEXT,"
           "restaurantID TEXT,"
           "restaurantName TEXT,"
-          "timeStamp DATETIME"
+          "timeStamp DATETIME,"
+          "PRIMARY KEY (foodID, restaurantID, timeStamp)"
           ")");
 
       
@@ -84,6 +85,13 @@ class SqliteData{
       await db?.insert("QUESTIONS", q.toJson());
     }
 
+  }
+
+
+  static Future<void> updateHistoryData(HistoryDAO history) async {
+    Database? db = await database;
+    await db?.insert("HISTORY", history.toJson());
+    DAO.history.add(history);
   }
 
   static Future<FoodDAO> getFoodByName(String name) async {

@@ -129,7 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
-
+  dart_sort_queue:
+    dependency: transitive
+    description:
+      name: dart_sort_queue
+      sha256: f3353ba8b4850e072d3368757f62edb79af34a9703c3e3df9c59342721f5f5b1
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2+3"
   device_info_plus:
     dependency: transitive
     description:
@@ -146,15 +153,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
-
-  dart_sort_queue:
-    dependency: transitive
-    description:
-      name: dart_sort_queue
-      sha256: f3353ba8b4850e072d3368757f62edb79af34a9703c3e3df9c59342721f5f5b1
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2+3"
   enum_to_string:
     dependency: transitive
     description:
@@ -163,7 +161,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-
   fake_async:
     dependency: transitive
     description:
@@ -539,7 +536,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-
   logging:
     dependency: transitive
     description:
@@ -548,7 +544,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-
   mapbox_maps_flutter:
     dependency: "direct main"
     description:
@@ -557,7 +552,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.5"
-
   matcher:
     dependency: transitive
     description:
@@ -734,7 +728,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.1"
-
+  rbush:
+    dependency: transitive
+    description:
+      name: rbush
+      sha256: "48b683421b4afb43a642f82c6aa31911e54f3069143d31c7d33cbe329df13403"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   sensors_plus:
     dependency: "direct main"
     description:
@@ -767,16 +768,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-
-  rbush:
-    dependency: transitive
-    description:
-      name: rbush
-      sha256: "48b683421b4afb43a642f82c6aa31911e54f3069143d31c7d33cbe329df13403"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1"
-
   sky_engine:
     dependency: transitive
     description: flutter
@@ -862,16 +853,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.5"
-
-  synchronized:
-    dependency: transitive
-    description:
-      name: synchronized
-      sha256: "539ef412b170d65ecdafd780f924e5be3f60032a1128df156adad6c5b373d558"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.0+1"
-
   swipeable_tile:
     dependency: "direct main"
     description:
@@ -880,7 +861,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0+3"
-
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "539ef412b170d65ecdafd780f924e5be3f60032a1128df156adad6c5b373d558"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0+1"
   term_glyph:
     dependency: transitive
     description:
