@@ -17,7 +17,7 @@ class FoodInfoContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Padding(padding: EdgeInsets.only(bottom: 8.0)),
-            Text(_info.name,
+            Text(_info.name.toUpperCase(),
                 textAlign: TextAlign.start, style: ThemeConstants.titleStyle),
             // Text(_info.script,
             //   textAlign: TextAlign.start,
