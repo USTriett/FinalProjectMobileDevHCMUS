@@ -116,10 +116,6 @@ class ListQuestionDAO {
             'Questions',
             style: ThemeConstants.textStyleLarge,
           ),
-          title: Text(
-            'Questions',
-            style: ThemeConstants.textStyleLarge,
-          ),
           actions: <Widget>[
             colorButton(context, 'Lọc', () async {
               filterCallback();
