@@ -26,6 +26,7 @@ class NavBarComponent extends StatefulWidget {
   static const int HOME_PAGE_TAB = 0;
   static const int RANDOM_PAGE_TAB = 1;
   static const int HISTORY_PAGE_TAB = 3;
+  static const int FIND_FOOD_TAB = 2;
 // static const int HOME_PAGE_TAB = 1;
 // static const int HOME_PAGE_TAB = 1;
 

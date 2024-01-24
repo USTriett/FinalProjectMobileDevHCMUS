@@ -11,9 +11,10 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return 
     GestureDetector(
-      onTap: (){
-        WidgetKey.findkey.currentState?.fetchListFood(this.name);
+      onTap: ()async{
         WidgetKey.navBarKey.currentState?.setPage(NavBarComponent.FIND_FOOD_TAB);
+        await WidgetKey.findkey.currentState?.fetchListFood(this.name);
+
       },
       child: Container(
       child: _buildCircleImage(),

@@ -67,7 +67,7 @@ class FindFoodPageState extends State<FindFoodPage> {
 
     if (response.statusCode == 200) {
       setState(() {
-        isShowDialog = false;
+        widget.req = buffers;
         foodList = json.decode(response.body);
         newfoods = List.generate(
       matchFood.length,
@@ -172,7 +172,7 @@ class FindFoodPageState extends State<FindFoodPage> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(widget.req == "") {
+      if(isShowDialog) {
         showDialog(
       context: context,
       barrierDismissible: false,
