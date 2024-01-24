@@ -23,17 +23,14 @@ class FindFoodPage extends StatefulWidget {
   final List<QuestionDAO> questions;
 
   FindFoodPage(
-      {
-      required this.foods,
-      required this.questions,
-      required this.req
-      }):super(key: WidgetKey.findkey);
+      {required this.foods, required this.questions, required this.req})
+      : super(key: WidgetKey.findkey);
 
   @override
-  FindFoodPageState createState() =>FindFoodPageState(
-    (req == "") ? true : false,
-    ListQuestionDAO(questions: questions),
-  );
+  FindFoodPageState createState() => FindFoodPageState(
+        (req == "") ? true : false,
+        ListQuestionDAO(questions: questions),
+      );
 }
 
 class FindFoodPageState extends State<FindFoodPage> {
@@ -61,6 +58,13 @@ class FindFoodPageState extends State<FindFoodPage> {
     "Vietnamese braised beef dish": "Bò kho",
   };
 
+  void closeDialogState() {
+    setState(() {
+      isShowDialog = false;
+      widget.req = "ABC";
+    });
+  }
+
   Future<void> fetchListFood(String buffers) async {
     final response = await http
         .get(Uri.parse('https://harryle1203.pythonanywhere.com/$buffers'));
@@ -70,18 +74,18 @@ class FindFoodPageState extends State<FindFoodPage> {
         isShowDialog = false;
         foodList = json.decode(response.body);
         newfoods = List.generate(
-      matchFood.length,
-    (index) => widget.foods.firstWhere(
-        (food) => food.name == matchFood["${foodList["$index"]}"],
-        orElse: () => FoodDAO("", [], "", 0, "")),
-  );
+          matchFood.length,
+          (index) => widget.foods.firstWhere(
+              (food) => food.name == matchFood["${foodList["$index"]}"],
+              orElse: () => FoodDAO("", [], "", 0, "")),
+        );
 
-  currentFoods = List.generate(
-    matchFood.length,
-    (index) => widget.foods.firstWhere(
-        (food) => food.name == matchFood["${foodList["$index"]}"],
-        orElse: () => FoodDAO("", [], "", 0, "")),
-  );
+        currentFoods = List.generate(
+          matchFood.length,
+          (index) => widget.foods.firstWhere(
+              (food) => food.name == matchFood["${foodList["$index"]}"],
+              orElse: () => FoodDAO("", [], "", 0, "")),
+        );
       });
     } else {
       print('Failed to fetch food data.');
@@ -90,15 +94,13 @@ class FindFoodPageState extends State<FindFoodPage> {
 
   List<FoodDAO> newfoods = [];
 
-
   List<FoodDAO> currentFoods = [];
-  
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<FoodSwiperState> _childKey = GlobalKey<FoodSwiperState>();
- 
-    buffer = (widget.req.compareTo("")==0)? quesReq.toString() : widget.req;
+
+    buffer = (widget.req.compareTo("") == 0) ? quesReq.toString() : widget.req;
 
     List<FoodCard> cards =
         currentFoods.map((foodDAO) => FoodCard(foodDAO)).toList();
@@ -108,10 +110,67 @@ class FindFoodPageState extends State<FindFoodPage> {
     //     quesReq.showQuestionsPopup(context, fetchListFood);
     //     // isShowDialog = false;
     // }
-        // fetchListFood;
+    // fetchListFood;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.req == "" && isShowDialog == true) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            _dismissDialog() {
+              Navigator.pop(context);
+            }
 
-    
+            return AlertDialog(
+              title: const Text(
+                'Questions',
+                style: ThemeConstants.textStyleLarge,
+              ),
+              actions: <Widget>[
+                colorButton(context, 'Lọc', () async {
+                  buffer =
+                      "${DataManager.ans[0]} ${DataManager.ans[1]} ${DataManager.ans[2]}";
+                  await fetchListFood(buffer);
 
+                  await DataManager.updateAnswer(widget.questions);
+                  buffer = "";
+                  _dismissDialog();
+                }),
+                SizedBox(
+                  height: 10.0,
+                ),
+                TextButton(
+                    onPressed: () async {
+                      await fetchListFood(buffer);
+                      _dismissDialog();
+                    },
+                    child: Text('Bỏ qua')),
+              ],
+              content: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      width: double.maxFinite,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: widget.questions.length,
+                        itemBuilder: (context, index) {
+                          QuestionDAO question = widget.questions[index];
+                          return QuestionWidget(
+                              questionDAO: question, index: index);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        fetchListFood(widget.req);
+      }
+    });
     FoodSwiper swiper = FoodSwiper(
       key: _childKey,
       context: context,
@@ -140,7 +199,6 @@ class FindFoodPageState extends State<FindFoodPage> {
       },
     );
 
-  
     return Scaffold(
       body: Center(
           child: BlocProvider<SwiperBloc>(
@@ -171,64 +229,5 @@ class FindFoodPageState extends State<FindFoodPage> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(widget.req == "") {
-        showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        _dismissDialog() {
-          Navigator.pop(context);
-        }
-
-        return AlertDialog(
-          title: const Text(
-            'Questions',
-            style: ThemeConstants.textStyleLarge,
-          ),
-          actions: <Widget>[
-            colorButton(context, 'Lọc', () async {
-              buffer = "${DataManager.ans[0]} ${DataManager.ans[1]} ${DataManager.ans[2]}";
-              await fetchListFood(buffer);
-              
-              await DataManager.updateAnswer(widget.questions);
-              buffer = "";
-              _dismissDialog();
-            }),
-            SizedBox(
-              height: 10.0,
-            ),
-            TextButton(
-              
-                onPressed: () async{
-                  await fetchListFood(buffer);
-                  _dismissDialog();
-                },
-                child: Text('Bỏ qua')),
-          ],
-          content: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  width: double.maxFinite,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.questions.length,
-                    itemBuilder: (context, index) {
-                      QuestionDAO question = widget.questions[index];
-                      return QuestionWidget(questionDAO: question, index: index);
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-      }
-      
-    });
-   
   }
 }

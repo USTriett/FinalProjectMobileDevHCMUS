@@ -209,7 +209,9 @@ class _HomePageState extends State<HomePage> {
                   return GestureDetector(
                     onTap: () {
                       // navigate to swipe page with category filter
-                      print("### TO swipe page with category filter! ###");
+                      print("Nav from cate");
+                      WidgetKey.navBarKey.currentState
+                          ?.fromCateSetPage(DAO.categories[index].categoryName);
                     },
                     child: CategoryCard(
                       category: DAO.categories[index],

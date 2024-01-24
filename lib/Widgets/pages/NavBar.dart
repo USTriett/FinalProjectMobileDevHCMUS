@@ -62,6 +62,10 @@ class NavBar extends State<NavBarComponent> {
   }
 
   void setPage(int tabID) {
+    if (tabID == NavBarComponent.FIND_FOOD_TAB) {
+      widget.screens[NavBarComponent.FIND_FOOD_TAB] =
+          FindFoodPage(foods: DAO.foods, questions: DAO.list, req: "");
+    }
     CurvedNavigationBarState? navBarState =
         WidgetKey.bottomNavigationKey.currentState;
     navBarState?.setPage(tabID);
@@ -71,6 +75,15 @@ class NavBar extends State<NavBarComponent> {
       isShake = false;
     }
     WidgetKey.randomPageKey?.currentState?.setShakeAvailable(isShake);
+  }
+
+  void fromCateSetPage(String cateName) async {
+    widget.screens[NavBarComponent.FIND_FOOD_TAB] =
+        FindFoodPage(foods: DAO.foods, questions: DAO.list, req: cateName);
+    print("from cate set page");
+    CurvedNavigationBarState? navBarState =
+        WidgetKey.bottomNavigationKey.currentState;
+    navBarState?.setPage(NavBarComponent.FIND_FOOD_TAB);
   }
 
   @override
