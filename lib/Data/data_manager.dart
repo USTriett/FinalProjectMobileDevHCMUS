@@ -118,5 +118,6 @@ class DataManager{
 
   }
 
+  static List<String> ans = ['', '', ''];
 
 }

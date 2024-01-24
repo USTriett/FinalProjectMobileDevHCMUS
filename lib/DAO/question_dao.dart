@@ -38,7 +38,7 @@ ButtonStyle chose = ElevatedButton.styleFrom(
 class QuestionDAO {
   String _question; // Sử dụng dấu "_" để đặt tên cho thuộc tính riêng tư
   List<String> _options;
-  late String _answer;
+   String _answer = "";
 
   QuestionDAO({required String question, required List<String> options})
       : _question = question,
@@ -99,7 +99,7 @@ class ListQuestionDAO {
   }) : _questions = questions;
 
   Future<void> showQuestionsPopup(
-      BuildContext context, VoidCallback filterCallback) async {
+      BuildContext context, Function filterCallback) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -115,9 +115,9 @@ class ListQuestionDAO {
           ),
           actions: <Widget>[
             colorButton(context, 'Lọc', () async {
-              if (filterCallback != null) {
-                filterCallback();
-              }
+              
+              filterCallback();
+              
               await DataManager.updateAnswer(_questions);
               _dismissDialog();
             }),
@@ -140,7 +140,7 @@ class ListQuestionDAO {
                     itemCount: _questions.length,
                     itemBuilder: (BuildContext context, int index) {
                       QuestionDAO question = _questions[index];
-                      return QuestionWidget(questionDAO: question);
+                      return QuestionWidget(questionDAO: question, index: index,);
                     },
                   ),
                 ),
@@ -155,8 +155,10 @@ class ListQuestionDAO {
   String toString() {
     String res = "";
     for (QuestionDAO questionDAO in _questions) {
-      String buffer = (questionDAO._answer == null) ? "" : questionDAO._answer;
-      res = res + " " + dictionary[buffer]!;
+      String buffer = questionDAO._answer;
+      if(dictionary[buffer] == null){
+        res = res + " ";  
+      }
     }
     res = res + " " + "dish";
     return res;
