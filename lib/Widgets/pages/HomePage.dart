@@ -207,8 +207,8 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Row(children: [
-                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
-                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
+                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "Món chay"),
+                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "Món nước"),
               ]),
             ),
                     ],

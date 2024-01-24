@@ -60,8 +60,6 @@ void main() async {
   await Firebase.initializeApp();
   await deleteDatabaseFile();
 
-  await SqliteData.insertAllData();
-
   runApp(MyApp());
 }
 

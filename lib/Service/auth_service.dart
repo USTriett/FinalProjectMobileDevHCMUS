@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Widgets/components/popup_question.dart';
 import 'package:next_food/Widgets/pages/SplashScreen.dart';
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
@@ -85,6 +86,7 @@ class AuthClass {
 
       bool isVerified = auth.currentUser!.emailVerified;
       test();
+      await SqliteData.insertAllData();
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -147,6 +149,7 @@ class AuthClass {
         storeTokenAndData(userCredential);
 
         // remove the previous page from the stack and navigate to the home page.
+        await SqliteData.insertAllData();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (builder) => SplashScreen()),
@@ -180,7 +183,6 @@ class AuthClass {
       await _googleSignIn.signOut();
       await auth.signOut();
       await storage.delete(key: "token");
-
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (builder) => SignInPage()),

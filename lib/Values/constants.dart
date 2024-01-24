@@ -39,5 +39,4 @@ class DAO{
   static List<QuestionDAO> list = [];
   static List<FoodDAO> foods =[];
   static List<HistoryDAO> history = [];
-
 }
