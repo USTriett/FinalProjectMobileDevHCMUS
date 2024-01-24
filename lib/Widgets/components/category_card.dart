@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:next_food/DAO/category_dao.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Values/constants.dart';
+import 'package:next_food/Widgets/pages/NavBar.dart';
 
 class CategoryCard extends StatelessWidget {
   CategoryCard({Key? key, required this.category}) : super(key: key) {
@@ -14,8 +16,15 @@ class CategoryCard extends StatelessWidget {
   final CategoryDAO category;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return 
+    GestureDetector(
+      onTap: (){
+        WidgetKey.findkey.currentState?.fetchListFood(this.name);
+        WidgetKey.navBarKey.currentState?.setPage(NavBarComponent.FIND_FOOD_TAB);
+      },
+      child: Container(
       child: _buildCircleImage(),
+    ),
     );
   }
 

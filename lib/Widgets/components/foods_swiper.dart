@@ -21,10 +21,10 @@ class FoodSwiper extends StatefulWidget{
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final BuildContext context;
   @override
-  State<StatefulWidget> createState() => _FoodSwiperState();
+  State<StatefulWidget> createState() => FoodSwiperState();
 }
 
-class _FoodSwiperState extends State<FoodSwiper> {
+class FoodSwiperState extends State<FoodSwiper> {
   List<SwipeItem> _swipeItems = [];
   late MatchEngine _matchEngine;
   List<SwipeItem> _newItems = [];
@@ -32,7 +32,7 @@ class _FoodSwiperState extends State<FoodSwiper> {
 
   @override
   void initState() {
-
+    
     // TODO: implement initState
     List<FoodCard> foodCards = widget.foodCards;
     for (var item in foodCards){
@@ -51,7 +51,8 @@ class _FoodSwiperState extends State<FoodSwiper> {
 
   @override
   Widget build(BuildContext context) {
-    final SwiperBloc swiperBloc = BlocProvider.of<SwiperBloc>(context);
+
+    // final SwiperBloc swiperBloc = BlocProvider.of<SwiperBloc>(context);
     int n = _newItems.length;
     for(int i = 0; i < n; i ++){
       // SwipeItem newItem = SwipeItem(
@@ -86,14 +87,7 @@ class _FoodSwiperState extends State<FoodSwiper> {
                     borderRadius: BorderRadius.circular(10),
                   // color: Colors.green
                 ),
-                child:
-                BlocBuilder<SwiperBloc, SwiperStates>(
-                  builder: (context, state) {
-                    if (state is AddMoreCards) {
-                      addItemData(swiperBloc);
-                    }
-
-                    return SwipeCards(
+                child: SwipeCards(
                       matchEngine: _matchEngine,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
@@ -107,18 +101,48 @@ class _FoodSwiperState extends State<FoodSwiper> {
                         count += 1;
                         count %= 3;
 
-                        if(count == 2){
-                          swiperBloc.add(SwipeHalfEvent());
-                        }
+                        // if(count == 2){
+                        //   swiperBloc.add(SwipeHalfEvent());
+                        // }
                       },
                       leftSwipeAllowed: true,
                       rightSwipeAllowed: true,
                       upSwipeAllowed: false,
                       fillSpace: false,
-                    );
-                  }
+                    )
 
-                )
+                // BlocBuilder<SwiperBloc, SwiperStates>(
+                //   builder: (context, state) {
+                //     if (state is AddMoreCards) {
+                //       addItemData(swiperBloc);
+                //     }
+
+                //     return SwipeCards(
+                //       matchEngine: _matchEngine,
+                //       itemBuilder: (BuildContext context, int index) {
+                //         return Container(
+                //           child: _swipeItems[index].content,
+                //         );
+                //       },
+                //       onStackFinished: () {
+                //         // Xử lý khi stack đã hoàn thành
+                //       },
+                //       itemChanged: (SwipeItem item, int index) {
+                //         count += 1;
+                //         count %= 3;
+
+                //         if(count == 2){
+                //           swiperBloc.add(SwipeHalfEvent());
+                //         }
+                //       },
+                //       leftSwipeAllowed: true,
+                //       rightSwipeAllowed: true,
+                //       upSwipeAllowed: false,
+                //       fillSpace: false,
+                //     );
+                //   }
+
+                // )
               ),
             ),
             // _rowUtilButton(),

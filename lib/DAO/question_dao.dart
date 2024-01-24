@@ -6,6 +6,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../Data/data_manager.dart';
 
+Map<String, String> dictionary = {
+  "Kiêng": "Healthy",
+  "Không kiêng": "Unhealthy",
+  "chay": "Vegetable",
+  "mặn": "Meaty",
+  "nước": "Soup",
+  "khô": "Dry",
+};
+
 ButtonStyle un_chose = ElevatedButton.styleFrom(
   primary: Colors.white,
   onPrimary: Colors.grey,
@@ -29,7 +38,7 @@ ButtonStyle chose = ElevatedButton.styleFrom(
 class QuestionDAO {
   String _question; // Sử dụng dấu "_" để đặt tên cho thuộc tính riêng tư
   List<String> _options;
-  late String _answer;
+  String _answer = "";
 
   QuestionDAO({required String question, required List<String> options})
       : _question = question,
@@ -92,9 +101,11 @@ class ListQuestionDAO {
     required List<QuestionDAO> questions,
   }) : _questions = questions;
 
-  Future<void> showQuestionsPopup(BuildContext context) async {
+  Future<void> showQuestionsPopup(
+      BuildContext context, Function filterCallback) async {
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         _dismissDialog() {
           Navigator.pop(context);
@@ -105,9 +116,14 @@ class ListQuestionDAO {
             'Questions',
             style: ThemeConstants.textStyleLarge,
           ),
+          title: Text(
+            'Questions',
+            style: ThemeConstants.textStyleLarge,
+          ),
           actions: <Widget>[
             colorButton(context, 'Lọc', () async {
-              // print(printAnswer());
+              filterCallback();
+
               await DataManager.updateAnswer(_questions);
               _dismissDialog();
             }),
@@ -130,7 +146,10 @@ class ListQuestionDAO {
                     itemCount: _questions.length,
                     itemBuilder: (BuildContext context, int index) {
                       QuestionDAO question = _questions[index];
-                      return QuestionWidget(questionDAO: question);
+                      return QuestionWidget(
+                        questionDAO: question,
+                        index: index,
+                      );
                     },
                   ),
                 ),
@@ -142,11 +161,15 @@ class ListQuestionDAO {
     );
   }
 
-  String printAnswer() {
+  String toString() {
     String res = "";
     for (QuestionDAO questionDAO in _questions) {
-      res = res + " " + questionDAO._answer;
+      String buffer = questionDAO._answer;
+      if (dictionary[buffer] == null) {
+        res = res + " ";
+      }
     }
+    res = res + " " + "dish";
     return res;
   }
 }

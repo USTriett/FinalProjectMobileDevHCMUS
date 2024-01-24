@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:next_food/DAO/question_dao.dart';
+import 'package:next_food/Data/data_manager.dart';
 import 'package:next_food/Themes/theme_constants.dart';
 
 ButtonStyle un_chose = ElevatedButton.styleFrom(
@@ -22,18 +23,20 @@ ButtonStyle chose = ElevatedButton.styleFrom(
   ),
 );
 
+
+
 class QuestionWidget extends StatefulWidget {
   final QuestionDAO questionDAO;
-
-  const QuestionWidget({Key? key, required this.questionDAO}) : super(key: key);
+  final int index;
+  const QuestionWidget({Key? key, required this.questionDAO, required this.index}) : super(key: key);
 
   @override
-  _QuestionWidgetState createState() => _QuestionWidgetState();
+  QuestionWidgetState createState() => QuestionWidgetState();
 }
 
-class _QuestionWidgetState extends State<QuestionWidget> {
+class QuestionWidgetState extends State<QuestionWidget> {
   String selectedOption = '';
-
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,6 +60,7 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                   setState(() {
                     selectedOption = option;
                     widget.questionDAO.answer = selectedOption;
+                    DataManager.ans[widget.index] = selectedOption;
                   });
                 },
                 style: selectedOption == option ? chose : un_chose,

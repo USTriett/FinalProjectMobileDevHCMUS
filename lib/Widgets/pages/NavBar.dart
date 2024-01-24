@@ -8,6 +8,7 @@ import 'package:next_food/Bloc/Events/navbar_events/navbar_events.dart';
 import 'package:next_food/Bloc/States/navbar_states/navbar_states.dart';
 import 'package:next_food/Bloc/navbar_bloc.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Widgets/pages/FindFoodPage.dart';
 import 'package:next_food/Widgets/pages/HistoryPage.dart';
 import 'package:next_food/Widgets/pages/HomePage.dart';
 import 'package:next_food/Widgets/pages/RandomPage.dart';
@@ -32,7 +33,7 @@ class NavBarComponent extends StatefulWidget {
   final screens = [
     HomePage(),
     RandomPage(foods: DAO.foods),
-    SignInPage(),
+    FindFoodPage(foods: DAO.foods, questions: DAO.list, req: ""),
     HistoryPage(),
     SettingPage(),
   ];

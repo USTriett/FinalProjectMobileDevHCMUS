@@ -126,4 +126,6 @@ class DataManager {
   static Future<void> loadAllData() async {
     DAO.list = await DataManager.getAllQuestion();
   }
+
+  static List<String> ans = ['', '', ''];
 }

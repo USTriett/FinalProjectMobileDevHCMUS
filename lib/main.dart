@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -46,7 +47,7 @@ Future<void> deleteDatabaseFile() async {
   // Lấy thư mục lưu trữ ứng dụng
   final appDir = await getApplicationDocumentsDirectory();
   final dbPath = join(appDir.path, 'NextFood.db');
-
+  
   // Xóa cơ sở dữ liệu SQLite
   await deleteDatabase(dbPath);
 }
@@ -58,6 +59,12 @@ void main() async {
   // Initialize Firebase.
   await Firebase.initializeApp();
   await deleteDatabaseFile();
+
+  // final response = await http
+  //       .get(Uri.parse('https://harryle1203.pythonanywhere.com/soup'));
+
+  // print("Check respone");
+  // print(response.statusCode);
 
   runApp(MyApp());
 }
@@ -122,5 +129,6 @@ class _MyAppState extends State<MyApp> {
       body: TestPage(),
     ));
   }
->>>>>>> Eric*/
+>>>>>> Eric*/
+
 }
