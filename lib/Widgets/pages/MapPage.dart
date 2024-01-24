@@ -10,15 +10,19 @@ import 'package:next_food/DAO/history_dao.dart';
 import 'package:next_food/Data/data_manager.dart';
 import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Values/constants.dart';
 import 'package:next_food/Widgets/components/color_button.dart';
 import 'package:next_food/Widgets/components/icon_text.dart';
 import 'package:next_food/Widgets/components/logo.dart';
+import 'package:next_food/Widgets/pages/HistoryPage.dart';
+import 'package:next_food/Widgets/pages/NavBar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator_platform_interface/src/models/position.dart' as Pos;
 import 'package:turf/src/geojson.dart' as GEOJSON;
+
 class MapPage extends StatefulWidget {
-  MapPage({Key? key, required this.food}) : super(key: key){
+  MapPage({Key? key, required this.food}) : super(key: key) {
     searchKey = food.name;
   }
   final FoodDAO food;
@@ -55,7 +59,7 @@ class _MapPageState extends State<MapPage> {
   CircleAnnotationManager? _circleAnnotationManager;
   PolylinePoints polylinePoints = PolylinePoints();
 
-  Future<List<dynamic>> _loadDetail() async{
+  Future<List<dynamic>> _loadDetail() async {
     await getCurrentLocation();
 
     print("########################");
@@ -69,9 +73,8 @@ class _MapPageState extends State<MapPage> {
     }
     await getDistances();
 
-
     details.sort(
-              (a, b) => a['distance']['value'].compareTo(b['distance']['value']));
+        (a, b) => a['distance']['value'].compareTo(b['distance']['value']));
 
     print("Detail length: ${details.length}");
     initMarker();
@@ -107,13 +110,12 @@ class _MapPageState extends State<MapPage> {
 
   Future<void> getCurrentLocation() async {
     PermissionStatus permissionStatus = await Permission.location.request();
-    if(permissionStatus != PermissionStatus.granted) {
+    if (permissionStatus != PermissionStatus.granted) {
       return;
     }
     Pos.Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-
 
     lat = position.latitude;
     lng = position.longitude;
@@ -121,7 +123,6 @@ class _MapPageState extends State<MapPage> {
     print("lat: $lat");
     print("lng: $lng");
     print("########################");
-
   }
 
   Future<void> searchPlaces() async {
@@ -222,8 +223,8 @@ class _MapPageState extends State<MapPage> {
       // move the screen to the path
       mapboxMap?.setCamera(CameraOptions(
           center: Point(
-                  coordinates:
-                      GEOJSON.Position((lng! + lngDes!) / 2, (lat! + latDes!) / 2))
+                  coordinates: GEOJSON.Position(
+                      (lng! + lngDes!) / 2, (lat! + latDes!) / 2))
               .toJson(),
           zoom: 7.0));
       mapboxMap?.flyTo(
@@ -282,6 +283,7 @@ class _MapPageState extends State<MapPage> {
       throw 'Could not launch $url';
     }
   }
+
   bool isLoad = false;
   @override
   void initState() {
@@ -289,99 +291,110 @@ class _MapPageState extends State<MapPage> {
     super.initState();
     isLoad = false;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
-        title: Center(
-            child: AppLogoWidget()
-        ),
+        title: Center(child: AppLogoWidget()),
         leading: Builder(
-          builder: (context){
+          builder: (context) {
             return IconButton(
-
-                onPressed: (){
+                onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(
-                  Icons.arrow_back
-                )
-            );
+                icon: Icon(Icons.arrow_back));
           },
         ),
       ),
-        body: FloatingPullUpCardLayout(
-      state: openList
-          ? FloatingPullUpState.uncollapsed
-          : FloatingPullUpState.collapsed,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
+      body: FloatingPullUpCardLayout(
+          state: openList
+              ? FloatingPullUpState.uncollapsed
+              : FloatingPullUpState.collapsed,
+          body: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              colorButton(
+                context,
+                "Chọn",
+                () async {
+                  if (latDes == null || lngDes == null) {
+                    SnackBar snackBar = SnackBar(
+                      content:
+                          Text("Vui lòng chọn điểm đến trước khi xác nhận"),
+                      backgroundColor: Colors.green,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    return;
+                  }
+                  // pick this restaurant
+                  HistoryDAO h = HistoryDAO(
+                      widget.food.id,
+                      widget.food.imgURL,
+                      widget.food.name,
+                      details[selectedId!]['formatted_address'],
+                      details[selectedId!]['place_id'],
+                      details[selectedId!]['name'],
+                      DateTime.now());
+                  // add history
+                  DataManager.addHistory(h);
+                  //load history to local
+                  await SqliteData.updateHistoryData(h);
+
+                  // switch to history page
+
+                  WidgetKey.navBarKey.currentState
+                      ?.setPage(NavBarComponent.HISTORY_PAGE_TAB);
+                  // open google map intent with start and end location
+                  Navigator.pop(context);
+
+                  openGoogleMapsDirections();
+                },
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              isLoad
+                  ? _buildListRestaurant()
+                  : FutureBuilder(
+                      future: _loadDetail(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return const Center(
+                              child: Text(
+                            "Error!",
+                            style: ThemeConstants.textStyleLarge,
+                          ));
+                        } else if (snapshot.hasData) {
+                          return _buildListRestaurant();
+                        }
+                        return const Center(
+                            child: Text(
+                          "Không thể tìm thấy quán nào gần đây!",
+                          style: ThemeConstants.textStyleLarge,
+                        ));
+                      })
+            ],
           ),
-          colorButton(
-            context,
-            "Chọn",
-            () async {
-              if (latDes == null || lngDes == null) {
-                SnackBar snackBar = SnackBar(
-                  content: Text("Vui lòng chọn điểm đến trước khi xác nhận"),
-                  backgroundColor: Colors.green,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                return;
-              }
-              // pick this restaurant
-              HistoryDAO h = HistoryDAO(widget.food.id, widget.food.imgURL, widget.food.name, details[selectedId!]['formatted_address'], details[selectedId!]['place_id'], details[selectedId!]['name'], DateTime.now());
-              // add history
-              DataManager.addHistory(h);
-              //load history to local
-              await SqliteData.updateHistoryData(h);
-
-              // open google map intent with start and end location
-
-              openGoogleMapsDirections();
-
-            },
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          isLoad ? _buildListRestaurant() : FutureBuilder(
-              future: _loadDetail(),
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting){
-                  return const Center(child: CircularProgressIndicator());
-                }
-                else if(snapshot.hasError) {
-                  return const Center(child: Text("Error!", style: ThemeConstants.textStyleLarge,));
-                }
-                else if(snapshot.hasData){
-                  return _buildListRestaurant();
-                }
-                return const Center(child: Text("Không thể tìm thấy quán nào gần đây!", style: ThemeConstants.textStyleLarge,));
-
-              }
-          )
-
-        ],
-      ),
-      child: MapWidget(
-                  key: const ValueKey("mapWidget"),
-                  resourceOptions: ResourceOptions(accessToken: PUBLIC_ACCESS_TOKEN),
-                  cameraOptions: CameraOptions(
-                    center: Point(coordinates: GEOJSON.Position(lng!, lat!)).toJson(),
-                    // zoom: 4.0,
-                  ),
-                  // styleUri: MapboxStyles.DARK,
-                  textureView: true,
-                  onMapCreated: _onMapCreated,
-                )
-
-
-        ),
-      );
+          child: MapWidget(
+            key: const ValueKey("mapWidget"),
+            resourceOptions: ResourceOptions(accessToken: PUBLIC_ACCESS_TOKEN),
+            cameraOptions: CameraOptions(
+              center: Point(coordinates: GEOJSON.Position(lng!, lat!)).toJson(),
+              // zoom: 4.0,
+            ),
+            // styleUri: MapboxStyles.DARK,
+            textureView: true,
+            onMapCreated: _onMapCreated,
+          )),
+    );
   }
 
   Widget _buildListRestaurant() {
@@ -408,24 +421,19 @@ class _MapPageState extends State<MapPage> {
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               child: Container(
                 width: MediaQuery.of(context).size.width - 30,
-                child: Row(
-                    children: [
+                child: Row(children: [
                   GestureDetector(
                     onTap: () async {
                       // see path to that restaurant
                       if (latDes !=
-                          details[index]['geometry']['location']
-                          ['lat'] ||
+                              details[index]['geometry']['location']['lat'] ||
                           lngDes !=
-                              details[index]['geometry']['location']
-                              ['lng']) {
+                              details[index]['geometry']['location']['lng']) {
                         removeLayer();
                       }
                       setState(() {
-                        latDes =
-                        details[index]['geometry']['location']['lat'];
-                        lngDes =
-                        details[index]['geometry']['location']['lng'];
+                        latDes = details[index]['geometry']['location']['lat'];
+                        lngDes = details[index]['geometry']['location']['lng'];
                         openList = false;
                         selectedId = index;
                       });
@@ -462,28 +470,26 @@ class _MapPageState extends State<MapPage> {
                       onTap: () async {
                         // see location of that restaurant
                         if (latDes !=
-                            details[index]['geometry']['location']
-                            ['lat'] ||
+                                details[index]['geometry']['location']['lat'] ||
                             lngDes !=
-                                details[index]['geometry']['location']
-                                ['lng']) {
+                                details[index]['geometry']['location']['lng']) {
                           removeLayer();
                         }
                         setState(() {
                           latDes =
-                          details[index]['geometry']['location']['lat'];
+                              details[index]['geometry']['location']['lat'];
                           lngDes =
-                          details[index]['geometry']['location']['lng'];
+                              details[index]['geometry']['location']['lng'];
                           openList = false;
                           selectedId = index;
                         });
                         mapboxMap?.setCamera(CameraOptions(
                             center: Point(
-                                coordinates: GEOJSON.Position(
-                                    details[index]['geometry']
-                                    ['location']['lng'],
-                                    details[index]['geometry']
-                                    ['location']['lat']))
+                                    coordinates: GEOJSON.Position(
+                                        details[index]['geometry']['location']
+                                            ['lng'],
+                                        details[index]['geometry']['location']
+                                            ['lat']))
                                 .toJson(),
                             zoom: 12.0));
                         mapboxMap?.flyTo(
@@ -492,8 +498,7 @@ class _MapPageState extends State<MapPage> {
                                 zoom: 18,
                                 bearing: 0,
                                 pitch: 0),
-                            MapAnimationOptions(
-                                duration: 2000, startDelay: 0));
+                            MapAnimationOptions(duration: 2000, startDelay: 0));
                       },
                       child: Column(
                         // verticalDirection: VerticalDirection.down,
@@ -509,7 +514,6 @@ class _MapPageState extends State<MapPage> {
                               Container(
                                 width: 150,
                                 child: Text(
-
                                   details[index]['name'],
                                   // textAlign: TextAlign.end,
                                   maxLines: 1,
@@ -521,9 +525,10 @@ class _MapPageState extends State<MapPage> {
                           ),
                           Wrap(
                             children: [
-
                               Text(
-                                (details[index]['formatted_address'] as String).replaceAll("${details[index]['name']}, ", "") ,
+                                (details[index]['formatted_address'] as String)
+                                    .replaceAll(
+                                        "${details[index]['name']}, ", ""),
                                 // textAlign: TextAlign.end,
                                 maxLines: 3,
                                 style: ThemeConstants.storeSubtitleStyle,

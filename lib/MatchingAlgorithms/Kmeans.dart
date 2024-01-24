@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 class KMeans {
@@ -56,7 +58,8 @@ class KMeans {
   }
 
   // Hàm này trả về nhãn cho mỗi điểm dữ liệu trong dataSet
-  List<int> getLabels(List<List<double>> dataSet, List<List<double>> centroids) {
+  List<int> getLabels(
+      List<List<double>> dataSet, List<List<double>> centroids) {
     List<int> labels = [];
 
     for (List<double> x in dataSet) {
@@ -79,7 +82,8 @@ class KMeans {
 
   // Hàm này trả về true hoặc false nếu k-Means hoàn thành. Điều kiện k-Means hoàn thành là
   // thuật toán vượt ngưỡng số lượng vòng lặp hoặc centroids ngừng thay đổi
-  bool shouldStop(List<List<double>>? oldCentroids, List<List<double>> centroids, int iterations) {
+  bool shouldStop(List<List<double>>? oldCentroids,
+      List<List<double>> centroids, int iterations) {
     if (iterations > maxIteration) {
       return true;
     }
@@ -99,7 +103,8 @@ class KMeans {
   }
 
   // Trả về tọa độ mới cho k centroids của mỗi chiều.
-  List<List<double>> getCentroids(List<List<double>> dataSet, List<int> labels, int k) {
+  List<List<double>> getCentroids(
+      List<List<double>> dataSet, List<int> labels, int k) {
     List<List<double>> centroids = [];
 
     for (int j = 0; j < k; j++) {
@@ -112,21 +117,20 @@ class KMeans {
       }
 
       List<double> centroidJ = [];
-    for (int i = 0; i < dataSet[0].length; i++) {
-    double sum = 0;
-    for (int idx in idxJ) {
-    sum += dataSet[idx][i];
-    }
-    centroidJ.add(sum / idxJ.length);
-    }
+      for (int i = 0; i < dataSet[0].length; i++) {
+        double sum = 0;
+        for (int idx in idxJ) {
+          sum += dataSet[idx][i];
+        }
+        centroidJ.add(sum / idxJ.length);
+      }
 
-    centroids.add(centroidJ);
+      centroids.add(centroidJ);
     }
 
     return centroids;
   }
 }
-
 
 void main() {
   var arr = [0, 0, 0, 0, 0, 0];

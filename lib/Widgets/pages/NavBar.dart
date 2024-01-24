@@ -21,11 +21,11 @@ import 'package:next_food/nextfood_icons.dart';
 import '../../DAO/food_dao.dart';
 import '../../Values/constants.dart';
 
-
 class NavBarComponent extends StatefulWidget {
 // Private constructor
   static const int HOME_PAGE_TAB = 0;
   static const int RANDOM_PAGE_TAB = 1;
+  static const int HISTORY_PAGE_TAB = 3;
 // static const int HOME_PAGE_TAB = 1;
 // static const int HOME_PAGE_TAB = 1;
 
@@ -41,43 +41,39 @@ class NavBarComponent extends StatefulWidget {
   static final NavBarComponent _instance = NavBarComponent._internal();
 
 // Static method to access the single instance
-  static NavBarComponent getInstance(int tabID){
+  static NavBarComponent getInstance(int tabID) {
     currentTab = tabID;
     _instance.createState();
     return _instance;
-
   }
+
   static int currentTab = 0;
   @override
   State<NavBarComponent> createState() => NavBar.fromPage(currentTab);
-
 }
 
 class NavBar extends State<NavBarComponent> {
   int page = 0;
 
   NavBar();
-  NavBar.fromPage(int i){
+  NavBar.fromPage(int i) {
     page = i;
   }
 
-
-  void setPage(int tabID){
+  void setPage(int tabID) {
     CurvedNavigationBarState? navBarState =
         WidgetKey.bottomNavigationKey.currentState;
     navBarState?.setPage(tabID);
     // print("current tab2: ${page}");
     bool isShake = true;
-    if(tabID != NavBarComponent.RANDOM_PAGE_TAB){
+    if (tabID != NavBarComponent.RANDOM_PAGE_TAB) {
       isShake = false;
     }
     WidgetKey.randomPageKey?.currentState?.setShakeAvailable(isShake);
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     Widget navBar = CurvedNavigationBar(
       backgroundColor: Colors.transparent,
       key: WidgetKey.bottomNavigationKey,
@@ -85,9 +81,11 @@ class NavBar extends State<NavBarComponent> {
       height: 60.0,
       items: <Widget>[
         Icon(Icons.home, size: 30, color: ThemeConstants.backgroundColor),
-        Icon(FontAwesomeIcons.faceGrinSquintTears, size: 30, color: ThemeConstants.backgroundColor),
+        Icon(FontAwesomeIcons.faceGrinSquintTears,
+            size: 30, color: ThemeConstants.backgroundColor),
         Icon(Nextfood.nextFoodIcon, size: 40, color: Colors.black),
-        Icon(FontAwesomeIcons.clockRotateLeft, size: 30, color: ThemeConstants.backgroundColor),
+        Icon(FontAwesomeIcons.clockRotateLeft,
+            size: 30, color: ThemeConstants.backgroundColor),
         Icon(Icons.settings, size: 30, color: ThemeConstants.backgroundColor),
       ],
       color: ThemeConstants.buttonTextColor,
@@ -107,13 +105,12 @@ class NavBar extends State<NavBarComponent> {
     return SafeArea(
       top: true,
       child: Scaffold(
-        extendBody: false,
-        bottomNavigationBar: navBar,
-        body: Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: widget.screens[page],
-        )
-        ),
-      );
+          extendBody: false,
+          bottomNavigationBar: navBar,
+          body: Container(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: widget.screens[page],
+          )),
+    );
   }
 }

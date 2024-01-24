@@ -1,18 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Widgets/pages/NavBar.dart';
 
 import '../../Data/data_manager.dart';
 import '../../Data/sqlite_data.dart';
 import '../../Values/constants.dart';
 
-class SplashScreen extends StatefulWidget{
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin{
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -65,14 +69,20 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     );
   }
 
-  void _navigateToHome() async{
+  void _navigateToHome() async {
+    print(FirebaseAuth.instance.currentUser!.uid);
+    await SqliteData.insertAllData();
     final loadDataDuration = SqliteData.loadAllData(); // Bắt đầu tải dữ liệu
-
     // Delay for a minimum duration
-    final minimumDuration = Future.delayed(const Duration(seconds: 2)); // Thời gian tối thiểu
-    await Future.wait([loadDataDuration, minimumDuration]);
-    Navigator.pushReplacement(context,
-      MaterialPageRoute(builder: (context)=> NavBarComponent.getInstance(0))
-    );
+    final minimumDuration =
+        Future.delayed(const Duration(seconds: 2)); // Thời gian tối thiểu
+    await Future.wait([
+      loadDataDuration,
+      minimumDuration,
+    ]);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NavBarComponent.getInstance(0)));
   }
 }

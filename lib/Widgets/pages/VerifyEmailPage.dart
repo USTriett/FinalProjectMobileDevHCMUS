@@ -4,8 +4,10 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Service/auth_service.dart';
 import 'package:next_food/Widgets/pages/HomePage.dart';
+import 'package:next_food/Widgets/pages/SplashScreen.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({super.key});
@@ -41,7 +43,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
 
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (builder) => const HomePage()),
+            MaterialPageRoute(builder: (builder) => const SplashScreen()),
             (route) => false,
           );
         }

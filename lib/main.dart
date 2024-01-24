@@ -42,7 +42,6 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:next_food/Service/auth_service.dart';
 
-
 Future<void> deleteDatabaseFile() async {
   // Lấy thư mục lưu trữ ứng dụng
   final appDir = await getApplicationDocumentsDirectory();
@@ -79,14 +78,14 @@ class _MyAppState extends State<MyApp> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
   void checkLogin() async {
-    String? token = await authClass.getToken();
-    bool isVerified = auth.currentUser!.emailVerified;
+    bool checkLogin = authClass.isUserSignedIn();
 
-    if (token != null) {
-      print('token $token');
+    if (checkLogin) {
+      // await SqliteData.insertAllData();
       setState(() {
-        authClass.test();
-        currentPage = (isVerified ? const SplashScreen() : const VerifyEmailPage());
+        currentPage = (authClass.isUserVerified()
+            ? const SplashScreen()
+            : const VerifyEmailPage());
       });
     }
   }
@@ -97,16 +96,12 @@ class _MyAppState extends State<MyApp> {
     checkLogin();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-
       home: currentPage,
-
     );
-}
+  }
 
   // @override
   // Widget build(BuildContext context){
@@ -129,7 +124,3 @@ class _MyAppState extends State<MyApp> {
   }
 >>>>>>> Eric*/
 }
-
-
-
-
