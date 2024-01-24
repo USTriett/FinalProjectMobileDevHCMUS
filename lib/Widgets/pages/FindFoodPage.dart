@@ -8,6 +8,7 @@ import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/DAO/question_dao.dart';
 import 'package:next_food/Data/data_manager.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Values/constants.dart';
 import 'package:next_food/Widgets/components/color_button.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 import 'package:next_food/Widgets/components/foods_swiper.dart';
@@ -22,26 +23,27 @@ class FindFoodPage extends StatefulWidget {
   final List<QuestionDAO> questions;
 
   FindFoodPage(
-      {super.key,
+      {
       required this.foods,
       required this.questions,
-      required this.req});
+      required this.req
+      }):super(key: WidgetKey.findkey);
 
   @override
-  _FindFoodPageState createState() =>_FindFoodPageState(
+  FindFoodPageState createState() =>FindFoodPageState(
     (req == "") ? true : false,
     ListQuestionDAO(questions: questions),
   );
 }
 
-class _FindFoodPageState extends State<FindFoodPage> {
+class FindFoodPageState extends State<FindFoodPage> {
   bool isShowDialog;
 
   late String buffer;
 
   ListQuestionDAO quesReq;
 
-  _FindFoodPageState(this.isShowDialog, this.quesReq);
+  FindFoodPageState(this.isShowDialog, this.quesReq);
 
   Map<String, dynamic> foodList = {};
 
@@ -59,14 +61,13 @@ class _FindFoodPageState extends State<FindFoodPage> {
     "Vietnamese braised beef dish": "Bò kho",
   };
 
-  Future<void> fetchListFood() async {
+  Future<void> fetchListFood(String buffers) async {
     final response = await http
-        .get(Uri.parse('https://harryle1203.pythonanywhere.com/$buffer'));
+        .get(Uri.parse('https://harryle1203.pythonanywhere.com/$buffers'));
 
     if (response.statusCode == 200) {
       setState(() {
-        print("haha");
-        isShowDialog = !isShowDialog;
+        isShowDialog = false;
         foodList = json.decode(response.body);
         newfoods = List.generate(
       matchFood.length,
@@ -96,9 +97,9 @@ class _FindFoodPageState extends State<FindFoodPage> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<FoodSwiperState> _childKey = GlobalKey<FoodSwiperState>();
-    
+ 
     buffer = (widget.req.compareTo("")==0)? quesReq.toString() : widget.req;
-    print("buffer $buffer");
+
     List<FoodCard> cards =
         currentFoods.map((foodDAO) => FoodCard(foodDAO)).toList();
 
@@ -188,7 +189,7 @@ class _FindFoodPageState extends State<FindFoodPage> {
           actions: <Widget>[
             colorButton(context, 'Lọc', () async {
               buffer = "${DataManager.ans[0]} ${DataManager.ans[1]} ${DataManager.ans[2]}";
-              await fetchListFood();
+              await fetchListFood(buffer);
               
               await DataManager.updateAnswer(widget.questions);
               buffer = "";
@@ -200,7 +201,7 @@ class _FindFoodPageState extends State<FindFoodPage> {
             TextButton(
               
                 onPressed: () async{
-                  await fetchListFood();
+                  await fetchListFood(buffer);
                   _dismissDialog();
                 },
                 child: Text('Bỏ qua')),
@@ -226,7 +227,8 @@ class _FindFoodPageState extends State<FindFoodPage> {
       },
     );
       }
+      
     });
-    
+   
   }
 }

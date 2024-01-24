@@ -1,6 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:next_food/Bloc/States/navbar_states/navbar_states.dart';
 import 'package:next_food/Widgets/components/question_item.dart';
+import 'package:next_food/Widgets/pages/FindFoodPage.dart';
 
 import '../DAO/food_dao.dart';
 import '../DAO/history_dao.dart';
@@ -35,6 +37,7 @@ class WidgetKey{
   static GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
   static GlobalKey<RandomPageState> randomPageKey = GlobalKey();
   static GlobalKey<QuestionWidgetState> quesStateKey = GlobalKey();
+  static GlobalKey<FindFoodPageState> findkey = GlobalKey();
 }
 
 class DAO{

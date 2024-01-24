@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Values/constants.dart';
+import 'package:next_food/Widgets/pages/NavBar.dart';
 
 class CategoryCard extends StatelessWidget {
   final String imgUrl;
@@ -7,8 +9,15 @@ class CategoryCard extends StatelessWidget {
   const CategoryCard({super.key, required this.imgUrl, required this.name});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return 
+    GestureDetector(
+      onTap: (){
+        WidgetKey.findkey.currentState?.fetchListFood(this.name);
+        WidgetKey.navBarKey.currentState?.setPage(NavBarComponent.FIND_FOOD_TAB);
+      },
+      child: Container(
       child: _buildCircleImage(),
+    ),
     );
   }
 
