@@ -206,7 +206,15 @@ class _HomePageState extends State<HomePage> {
               height: 120,
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  return CategoryCard(category: DAO.categories[index]);
+                  return GestureDetector(
+                    onTap: () {
+                      // navigate to swipe page with category filter
+                      print("### TO swipe page with category filter! ###");
+                    },
+                    child: CategoryCard(
+                      category: DAO.categories[index],
+                    ),
+                  );
                 },
                 itemCount: categories.length,
                 shrinkWrap: true,

@@ -470,7 +470,7 @@ class _MapPageState extends State<MapPage> {
                       },
                       child: Column(
                         // verticalDirection: VerticalDirection.down,
-                        // mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Row(
