@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   void _navigateToHome() async {
-    print(FirebaseAuth.instance.currentUser!.uid);
+    // print(FirebaseAuth.instance.currentUser!.uid);
     await SqliteData.insertAllData();
     final loadDataDuration = SqliteData.loadAllData(); // Bắt đầu tải dữ liệu
     // Delay for a minimum duration

@@ -13,7 +13,7 @@ List<QuestionDAO> questions = [
     question: 'What is the capital of Germany?',
     options: ['Paris', 'Berlin', 'London', 'Rome'],
   ),
-    QuestionDAO(
+  QuestionDAO(
     question: 'What is the capital of France?',
     options: ['Paris', 'Berlin', 'London', 'Rome'],
   ),
@@ -41,7 +41,7 @@ class TestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ListQuestionDAO Lisquestions = ListQuestionDAO(questions:questions);
+    ListQuestionDAO Lisquestions = ListQuestionDAO(questions: questions);
 
     return Scaffold(
       appBar: AppBar(title: Text("Test")),
@@ -52,7 +52,7 @@ class TestPage extends StatelessWidget {
             // textColor: Colors.white,
             onPressed: () {
               // Lisquestions.showQuestionsPopup(context);
-              print("test api");
+              // print("test api");
               DataManager.addHistory(history);
             },
             child: Text("PressMe"),

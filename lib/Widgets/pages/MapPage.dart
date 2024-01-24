@@ -62,11 +62,6 @@ class _MapPageState extends State<MapPage> {
   Future<List<dynamic>> _loadDetail() async {
     await getCurrentLocation();
 
-    print("########################");
-    print("lat: $lat");
-    print("lng: $lng");
-    print("########################");
-
     await searchPlaces();
     for (var i = 0; i < places.length; i++) {
       await getDetail(places[i]['place_id']);
@@ -76,7 +71,6 @@ class _MapPageState extends State<MapPage> {
     details.sort(
         (a, b) => a['distance']['value'].compareTo(b['distance']['value']));
 
-    print("Detail length: ${details.length}");
     initMarker();
     this.isLoad = true;
     return details;
@@ -84,28 +78,6 @@ class _MapPageState extends State<MapPage> {
 
   void _onMapCreated(MapboxMap mapboxMap) {
     this.mapboxMap = mapboxMap;
-
-    // get current location
-    // await getCurrentLocation();
-    //
-    // print("########################");
-    // print("lat: $lat");
-    // print("lng: $lng");
-    // print("########################");
-    //
-    // await searchPlaces();
-    // for (var i = 0; i < places.length; i++) {
-    //   await getDetail(places[i]['place_id']);
-    // }
-    // await getDistances();
-    //
-    // setState(() {
-    //   // sort by distance
-    //   details.sort(
-    //       (a, b) => a['distance']['value'].compareTo(b['distance']['value']));
-    // });
-    //
-    // initMarker();
   }
 
   Future<void> getCurrentLocation() async {
@@ -119,10 +91,6 @@ class _MapPageState extends State<MapPage> {
 
     lat = position.latitude;
     lng = position.longitude;
-    print("########################");
-    print("lat: $lat");
-    print("lng: $lng");
-    print("########################");
   }
 
   Future<void> searchPlaces() async {

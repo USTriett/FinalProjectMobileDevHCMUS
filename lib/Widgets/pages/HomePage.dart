@@ -7,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:next_food/Bloc/Events/navbar_events/navbar_events.dart';
 import 'package:next_food/Bloc/navbar_bloc.dart';
+import 'package:next_food/DAO/category_dao.dart';
 import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Service/auth_service.dart';
@@ -136,6 +137,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<FoodDAO> cards = DAO.foods;
+  List<CategoryDAO> categories = DAO.categories;
+
   //sap xep thu tu
   @override
   Widget build(BuildContext context) {
@@ -152,13 +155,13 @@ class _HomePageState extends State<HomePage> {
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: LocationCard()),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 20, 20),
+              margin: EdgeInsets.fromLTRB(0, 0, 20, 20),
               alignment: Alignment.center,
               child: AppLogoWidget(),
             ),
             CarouselSlider.builder(
                 options: CarouselOptions(
-                  height: 400,
+                  height: 350,
                   aspectRatio: 16 / 9,
                   viewportFraction: 0.9,
                   enableInfiniteScroll: false,
@@ -200,11 +203,15 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Row(children: [
-                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "đồ chay"),
-                CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
-              ]),
+              height: 120,
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return CategoryCard(category: DAO.categories[index]);
+                },
+                itemCount: categories.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+              ),
             ),
           ],
         ),

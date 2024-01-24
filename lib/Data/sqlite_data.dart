@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:next_food/DAO/category_dao.dart';
 import 'package:next_food/DAO/food_dao.dart';
 import 'package:next_food/DAO/history_dao.dart';
 import 'package:next_food/DAO/question_dao.dart';
@@ -49,6 +50,12 @@ class SqliteData {
           "options TEXT,"
           "question TEXT"
           ")");
+      await db.execute("CREATE TABLE CATEGORIES ("
+          "categoryID TEXT PRIMARY KEY,"
+          "categoryName TEXT,"
+          "imageURL TEXT,"
+          "listFoodId TEXT"
+          ")");
       await db.execute("CREATE TABLE FOODS ("
           "id TEXT PRIMARY KEY,"
           "description TEXT,"
@@ -56,7 +63,7 @@ class SqliteData {
           "match_count INTEGER,"
           "name TEXT"
           ")");
-      print("food created");
+      // print("food created");
       await db.execute("CREATE TABLE HISTORY ("
           "foodID TEXT,"
           "foodImage TEXT,"
@@ -82,21 +89,26 @@ class SqliteData {
   static Future<void> insertAllData() async {
     Database? db = await database;
     List<HistoryDAO> histories = await DataManager.getHistory();
-    print(histories.length);
+    // print(histories.length);
     for (HistoryDAO h in histories) {
       await db?.insert("HISTORY", h.toJson());
-      print(h.toJson());
+      // print(h.toJson());
     }
     List<FoodDAO> foods = await DataManager.getAllFoods();
     for (FoodDAO f in foods) {
       await db?.insert("FOODS", f.toJson());
-      print(f.toJson());
+      // print(f.toJson());
+    }
+    List<CategoryDAO> categories = await DataManager.getAllCategories();
+    for (CategoryDAO f in categories) {
+      await db?.insert("CATEGORIES", f.toJson());
+      // print(f.toJson());
     }
 
     List<QuestionDAO> questions = await DataManager.getAllQuestion();
     for (QuestionDAO q in questions) {
       await db?.insert("QUESTIONS", q.toJson());
-      print(q.toJson());
+      // print(q.toJson());
     }
   }
 
@@ -138,9 +150,18 @@ class SqliteData {
     return his;
   }
 
+  static Future<List<CategoryDAO>> getAllCategories() async {
+    final db = await database;
+    var res = await db?.query("CATEGORIES");
+    List<CategoryDAO> cate =
+        res!.isNotEmpty ? res.map((c) => CategoryDAO.fromMap(c)).toList() : [];
+    return cate;
+  }
+
   static Future<void> loadAllData() async {
     DAO.foods = await getAllFoods();
     DAO.list = await getAllQuestions();
     DAO.history = await getHistory();
+    DAO.categories = await getAllCategories();
   }
 }

@@ -2,7 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FoodDAO{
+class FoodDAO {
   String _name;
   List<bool> _types;
   String _imgURL;
@@ -10,32 +10,35 @@ class FoodDAO{
   String _script;
   String id = "";
   //vidu
-  FoodDAO(this._name, this._types, this._imgURL, this._matched_nums, this._script);
-  FoodDAO.fromId(this.id, this._name, this._types, this._imgURL, this._matched_nums, this._script);
+  FoodDAO(
+      this._name, this._types, this._imgURL, this._matched_nums, this._script);
+  FoodDAO.fromId(this.id, this._name, this._types, this._imgURL,
+      this._matched_nums, this._script);
 
   String get name {
     return _name;
   }
 
-  factory FoodDAO.fromSnapShot(DocumentSnapshot<Map<String, dynamic>> doc){
+  factory FoodDAO.fromSnapShot(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data();
-    if(data == null)
-      print("food null");
-    else
-    {
-      print("food id: ${doc.id}");
-    }
-    return FoodDAO.fromId(doc.id, data?['name'], [], data?['image'], data?['match_count'], data?['description']);
+    // if (data == null)
+    //   print("food null");
+    // else {
+    //   print("food id: ${doc.id}");
+    // }
+    return FoodDAO.fromId(doc.id, data?['name'], [], data?['image'],
+        data?['match_count'], data?['description']);
   }
+
   set name(String newName) {
     _name = newName;
   }
 
-  String get script{
+  String get script {
     return _script;
   }
 
-  set script(String script){
+  set script(String script) {
     _script = script;
   }
 
@@ -46,8 +49,6 @@ class FoodDAO{
   set types(List<bool> newTypes) {
     _types = newTypes;
   }
-
-
 
   String get imgURL {
     return _imgURL;
@@ -70,7 +71,7 @@ class FoodDAO{
       'id': id,
       'image': this.imgURL,
       'description': script,
-      'name':name,
+      'name': name,
       'match_count': matchedNums,
     };
   }
@@ -85,7 +86,6 @@ class FoodDAO{
     return FoodDAO.fromId(id, name, [], imgURL, matchedNums, script);
   }
 
-
   @override
   int get hashCode {
     return id.hashCode;
@@ -93,7 +93,6 @@ class FoodDAO{
 
   @override
   bool operator ==(other) {
-    return other is FoodDAO &&
-        id == other.id;
+    return other is FoodDAO && id == other.id;
   }
 }

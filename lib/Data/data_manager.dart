@@ -1,7 +1,7 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:next_food/DAO/category_dao.dart';
 import 'package:next_food/Widgets/components/food_card.dart';
 
 import '../DAO/food_dao.dart';
@@ -10,9 +10,9 @@ import '../DAO/question_dao.dart';
 import '../Values/constants.dart';
 import 'collections.dart';
 
-class DataManager{
-  static Future<void> UpdateUser(String? email)async{
-    if(email == null) {
+class DataManager {
+  static Future<void> UpdateUser(String? email) async {
+    if (email == null) {
       return;
     }
   }
@@ -22,9 +22,13 @@ class DataManager{
   }
 
   static List<FoodCard> getCards(userId) {
-    return [FoodCard(FoodDAO("bún riêu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon")),
-      FoodCard(FoodDAO("bún mắm", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
-      FoodCard(FoodDAO("bún đậu", [false, true, false, true], "assets/bun_rieu.jpg", 0, "Bún đậu gất ngon")),
+    return [
+      FoodCard(FoodDAO("bún riêu", [false, true, false, true],
+          "assets/bun_rieu.jpg", 0, "Bún riêu gất ngon")),
+      FoodCard(FoodDAO("bún mắm", [false, true, false, true],
+          "assets/bun_rieu.jpg", 0, "Bún mắm gất ngon")),
+      FoodCard(FoodDAO("bún đậu", [false, true, false, true],
+          "assets/bun_rieu.jpg", 0, "Bún đậu gất ngon")),
     ];
   }
 
@@ -33,7 +37,8 @@ class DataManager{
 
   static Future<List<QuestionDAO>> getAllQuestion() async {
     final snapShot = await Collection.questionsRef.get();
-    final questionsData = snapShot.docs.map((e) => QuestionDAO.fromSnapShot(e)).toList();
+    final questionsData =
+        snapShot.docs.map((e) => QuestionDAO.fromSnapShot(e)).toList();
     return questionsData;
   }
 
@@ -45,16 +50,16 @@ class DataManager{
     String ans = '';
     List<dynamic> data = snapShot['answers'];
     ans = data.map((e) => e.toString()).toList().join(" ");
-    print(ans);
+    // print(ans);
     return ans;
   }
-  static Future<void> increaseFoodMatch(FoodDAO food)async {
+
+  static Future<void> increaseFoodMatch(FoodDAO food) async {
     final foodCollection = Collection.foodRef;
 
     int mcount = await getMatchCount(food.id);
-    foodCollection.doc(food.id).update({"mactch_count" : ++mcount})
-        .onError((e, _) => print("Error writing document: $e"));
-
+    foodCollection.doc(food.id).update({"mactch_count": ++mcount}).onError(
+        (e, _) => print("Error writing document: $e"));
   }
 
   static Future<List<HistoryDAO>> getHistory() async {
@@ -74,7 +79,7 @@ class DataManager{
     return histories;
   }
 
-  static Future<void> addHistory(HistoryDAO history) async{
+  static Future<void> addHistory(HistoryDAO history) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String? id = auth.currentUser?.uid;
     final curUser = Collection.userRef;
@@ -85,20 +90,20 @@ class DataManager{
     curUser.doc(id).update({"history": currentList});
   }
 
-  static Future<void> updateAnswer(List<QuestionDAO> answers) async{
-      FirebaseAuth auth = FirebaseAuth.instance;
-      String? id = auth.currentUser?.uid;
-      final curUser = Collection.userRef;
-      List<String> answersMap = [];
-      for (QuestionDAO q in answers) {
-        answersMap.add(q.answer);
-      }
-        curUser.doc(id).update({"answers" : answersMap})
-            .onError((e, _) => print("Error writing document: $e"));
-      await getAnswer();
+  static Future<void> updateAnswer(List<QuestionDAO> answers) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    String? id = auth.currentUser?.uid;
+    final curUser = Collection.userRef;
+    List<String> answersMap = [];
+    for (QuestionDAO q in answers) {
+      answersMap.add(q.answer);
+    }
+    curUser.doc(id).update({"answers": answersMap}).onError(
+        (e, _) => print("Error writing document: $e"));
+    await getAnswer();
   }
 
-  static Future<int> getMatchCount(String fid) async{
+  static Future<int> getMatchCount(String fid) async {
     final foodCollection = Collection.foodRef;
     final snapShot = await foodCollection.doc(fid).get();
 
@@ -106,17 +111,19 @@ class DataManager{
     return food.matchedNums;
   }
 
-  static Future<List<FoodDAO>> getAllFoods() async{
+  static Future<List<CategoryDAO>> getAllCategories() async {
+    final categoryCollection = Collection.categoryRef;
+    final snapShot = await categoryCollection.get();
+    return snapShot.docs.map((e) => CategoryDAO.fromSnapshot(e)).toList();
+  }
+
+  static Future<List<FoodDAO>> getAllFoods() async {
     final foodCollection = Collection.foodRef;
     final snapShot = await foodCollection.get();
     return snapShot.docs.map((e) => FoodDAO.fromSnapShot(e)).toList();
   }
 
-
-  static Future<void> loadAllData() async{
+  static Future<void> loadAllData() async {
     DAO.list = await DataManager.getAllQuestion();
-
   }
-
-
 }

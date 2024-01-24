@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:next_food/DAO/category_dao.dart';
 
 import '../DAO/food_dao.dart';
 import '../DAO/history_dao.dart';
@@ -7,12 +8,12 @@ import '../DAO/question_dao.dart';
 import '../Widgets/pages/NavBar.dart';
 import '../Widgets/pages/RandomPage.dart';
 
-class AppImagePath{
+class AppImagePath {
   static String facebook = "assets/icons8-google.svg";
   static String google = "assets/icons8-google.svg";
-
 }
-class AnimationConstants{
+
+class AnimationConstants {
   static const double initAnimationOffset = 100;
   static const double cardHeight = 220;
 
@@ -25,19 +26,20 @@ class AnimationConstants{
 
   static const double throwSlideYDistance = 200;
 
-  static const Duration backgroundCardsAnimationDuration = Duration(milliseconds: 300);
+  static const Duration backgroundCardsAnimationDuration =
+      Duration(milliseconds: 300);
   static const Duration swipeAnimationDuration = Duration(milliseconds: 500);
 }
 
-class WidgetKey{
+class WidgetKey {
   static GlobalKey<NavBar> navBarKey = GlobalKey();
   static GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
   static GlobalKey<RandomPageState> randomPageKey = GlobalKey();
 }
 
-class DAO{
+class DAO {
   static List<QuestionDAO> list = [];
-  static List<FoodDAO> foods =[];
+  static List<FoodDAO> foods = [];
   static List<HistoryDAO> history = [];
-
+  static List<CategoryDAO> categories = [];
 }
