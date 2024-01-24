@@ -3,21 +3,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:next_food/Widgets/components/popup_question.dart';
+import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Widgets/pages/SplashScreen.dart';
 import 'package:next_food/Widgets/pages/VerifyEmailPage.dart';
-
-import '../Values/constants.dart';
-import '../Widgets/pages/HomePage.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import '../Widgets/pages/SignInPage.dart';
 
 class AuthClass {
   FirebaseAuth auth = FirebaseAuth.instance;
-  final storage = FlutterSecureStorage();
+  // final storage = const FlutterSecureStorage();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  Future<void> test()async {
-    print("user now: ${auth.currentUser}");
+
+  bool isUserSignedIn() {
+    print("emaillll: ${auth.currentUser!.email}");
+    return auth.currentUser != null;
   }
+
+  bool isUserVerified() {
+    return auth.currentUser!.emailVerified;
+  }
+
   // Email & Password Sign Up
   Future<void> emailSignUp(BuildContext context, String name, String email,
       String password, String confirmPassword) async {
@@ -46,7 +53,7 @@ class AuthClass {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
 
-      storeTokenAndData(userCredential);
+      // storeTokenAndData(userCredential);
 
       // setState(() {
       //   isLoading = false;
@@ -78,17 +85,18 @@ class AuthClass {
       // Sign in the user with the email and password.
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      storeTokenAndData(userCredential);
+      // storeTokenAndData(userCredential);
       // setState(() {
       //   isLoading = false;
       // });
 
       bool isVerified = auth.currentUser!.emailVerified;
-      test();
+      // if (isVerified) await SqliteData.insertAllData();
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (builder) => isVerified ? SplashScreen() : VerifyEmailPage()),
+            builder: (builder) =>
+                isVerified ? SplashScreen() : VerifyEmailPage()),
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
@@ -129,12 +137,23 @@ class AuthClass {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
 
+        // await SqliteData.insertAllData();
+
         // create an user with name
         try {
-          firestore
+          // check if the user already exists in the firestore
+          final DocumentSnapshot documentSnapshot = await firestore
               .collection("Users")
               .doc(userCredential.user!.uid)
-              .set({"name": userCredential.user!.displayName});
+              .get();
+
+          // if the user does not exist, create a new user with the name
+          if (!documentSnapshot.exists) {
+            firestore
+                .collection("Users")
+                .doc(userCredential.user!.uid)
+                .set({"name": userCredential.user!.displayName});
+          }
         } catch (e) {
           // delete the user if the name is not set.
           await userCredential.user!.delete();
@@ -144,8 +163,9 @@ class AuthClass {
         }
 
         // Store the token and user data in the storage to keep the user logged in.
-        storeTokenAndData(userCredential);
+        // storeTokenAndData(userCredential);
 
+        // await SqliteData.insertAllData();
         // remove the previous page from the stack and navigate to the home page.
         Navigator.pushAndRemoveUntil(
           context,
@@ -164,22 +184,26 @@ class AuthClass {
     }
   }
 
-  Future<void> storeTokenAndData(UserCredential userCredential) async {
-    await storage.write(
-        key: "token", value: userCredential.credential!.token.toString());
-    await storage.write(
-        key: "userCredential", value: userCredential.toString());
-  }
+  // Future<void> storeTokenAndData(UserCredential userCredential) async {
+  //   String? token = userCredential.user!.uid;
+  //   await storage.write(key: "token", value: token);
+  //   await storage.write(
+  //       key: "userCredential", value: userCredential.toString());
+  // }
 
-  Future<String?> getToken() async {
-    return await storage.read(key: "token");
-  }
+  // Future<String?> getToken() async {
+  //   String? token = await storage.read(key: "token");
+  //   return token;
+  // }
 
   Future<void> logout(BuildContext context) async {
     try {
       await _googleSignIn.signOut();
       await auth.signOut();
-      await storage.delete(key: "token");
+      // await storage.delete(key: "token");
+      // await storage.deleteAll();
+
+      await SqliteData.deleteDatabaseFile();
 
       Navigator.pushAndRemoveUntil(
         context,

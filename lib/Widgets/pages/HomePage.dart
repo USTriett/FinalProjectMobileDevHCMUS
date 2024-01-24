@@ -35,9 +35,9 @@ class LocationCardState extends State<LocationCard> {
 
   String city = '';
 
-  String district='';
+  String district = '';
 
-  String country ='';
+  String country = '';
 
   @override
   Widget build(BuildContext context) {
@@ -52,26 +52,23 @@ class LocationCardState extends State<LocationCard> {
               width: 24, // Adjust the width as needed
               height: 24, // Adjust the height as needed
             ),
-
             _getCurrentAddress()
           ],
         ));
   }
 
   Widget _getCurrentAddress() {
-    if(isLoad)
-      {
-        return Container(
-            alignment: Alignment.center,
-            height: 60,
-            width: 280,
-            child: Text(
-              '$district, $city\n$country',
-              overflow: TextOverflow.visible,
-              style: ThemeConstants.textStyleSmall,
-            )
-        );
-      }
+    if (isLoad) {
+      return Container(
+          alignment: Alignment.center,
+          height: 60,
+          width: 280,
+          child: Text(
+            '$district, $city\n$country',
+            overflow: TextOverflow.visible,
+            style: ThemeConstants.textStyleSmall,
+          ));
+    }
     return FutureBuilder<Placemark>(
       future: _getCurrentLocation(),
       builder: (context, snapshot) {
@@ -94,8 +91,7 @@ class LocationCardState extends State<LocationCard> {
                 '$district, $city\n$country',
                 overflow: TextOverflow.visible,
                 style: ThemeConstants.textStyleSmall,
-              )
-          );
+              ));
         } else {
           return Text('No data available.');
         }
@@ -105,7 +101,7 @@ class LocationCardState extends State<LocationCard> {
 
   Future<Placemark>? _getCurrentLocation() async {
     bool isAccepted = await _requestLocationPermission();
-    if(!isAccepted) {
+    if (!isAccepted) {
       return Placemark(country: "NO PERMISSION");
     }
     Position position = await Geolocator.getCurrentPosition(
@@ -124,11 +120,11 @@ class LocationCardState extends State<LocationCard> {
       throw Exception('No address found for the current location.');
     }
   }
+
   Future<bool> _requestLocationPermission() async {
     PermissionStatus permissionStatus = await Permission.location.request();
     return permissionStatus == PermissionStatus.granted;
   }
-
 }
 
 class HomePage extends StatefulWidget {
@@ -147,10 +143,10 @@ class _HomePageState extends State<HomePage> {
         body: SafeArea(
       child: SingleChildScrollView(
           child: Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 60),
-            child: ListView(
-                    children: [
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 60),
+        child: ListView(
+          children: [
             Container(
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -161,31 +157,30 @@ class _HomePageState extends State<HomePage> {
               child: AppLogoWidget(),
             ),
             CarouselSlider.builder(
-              options: CarouselOptions(
-                height: 400,
-                aspectRatio: 16/9,
-                viewportFraction: 0.9,
-                enableInfiniteScroll: false,
-                autoPlay: true,
-              ),
-              itemCount: 5,
-              itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                GestureDetector(
-                  onTap: (){
-                    // CurvedNavigationBarState? navBarState =
-                    //     WidgetKey.bottomNavigationKey.currentState;
-                    // navBarState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
-                    //
-                    // WidgetKey.navBarKey?.currentState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
-                    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MapPage(food: cards[itemIndex]))
-                    );
-                  },
-                  child: FoodCard(cards[itemIndex])
-                )
-
-            ),
-
+                options: CarouselOptions(
+                  height: 400,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 0.9,
+                  enableInfiniteScroll: false,
+                  autoPlay: true,
+                ),
+                itemCount: 5,
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        GestureDetector(
+                            onTap: () {
+                              // CurvedNavigationBarState? navBarState =
+                              //     WidgetKey.bottomNavigationKey.currentState;
+                              // navBarState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
+                              //
+                              // WidgetKey.navBarKey?.currentState?.setPage(NavBarComponent.RANDOM_PAGE_TAB);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MapPage(food: cards[itemIndex])));
+                            },
+                            child: FoodCard(cards[itemIndex]))),
             Container(
               alignment: Alignment.centerLeft,
               margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -211,9 +206,9 @@ class _HomePageState extends State<HomePage> {
                 CategoryCard(imgUrl: "assets/bun_rieu.jpg", name: "món nước"),
               ]),
             ),
-                    ],
-                  ),
-          )),
+          ],
+        ),
+      )),
     ));
   }
 }
