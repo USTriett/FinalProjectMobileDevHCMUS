@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:next_food/Data/sqlite_data.dart';
 import 'package:next_food/Service/auth_service.dart';
+import 'package:next_food/Themes/theme_constants.dart';
+import 'package:next_food/Themes/theme_manager.dart';
 import 'package:next_food/Widgets/pages/HomePage.dart';
 import 'package:next_food/Widgets/pages/SplashScreen.dart';
 
@@ -65,27 +67,21 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           // Use MediaQuery to get the screen size.
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: Colors.black,
+          color: ThemeConstants.backgroundColor,
           child: Column(
             // Align the children to the center of the screen.
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Verify Email',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold),
+                style: ThemeConstants.titleStyle,
               ),
               SizedBox(
                 height: 15,
               ),
               Text(
                 'Open your email and click on the link we\nsent you to verify your email address.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
+                style: ThemeConstants.textStyleSmall,
               ),
               SizedBox(
                 height: 20,
@@ -97,9 +93,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                 child: Text(
                   'Cancel',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: const Color.fromARGB(150, 72, 69, 69),
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
